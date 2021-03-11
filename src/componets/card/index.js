@@ -3,7 +3,9 @@ import {View} from 'react-native'
 import {CardContainer, InfoContainer, Line, Line2, Line3, ContainerAno, AnoText, ImageAnime, TitleText, CategoryText, DescritionText, ContainerLeft} from './style'
 
 class Card extends React.PureComponent {
-
+    constructor(props) {
+        super(props)
+    }
     render(){
         return <CardContainer key={this.props.id} onPress={this.props.onPress}>
                     <ContainerLeft>

@@ -1,56 +1,57 @@
-import React, {useEffect, useState} from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import { FlatList, Text } from 'react-native'
 import { Container } from './style'
 import MiniCard from '../../componets/miniCard'
 import server from '../../services/api'
 import Header from '../../componets/header'
+import url from '../../config/urls'
 
-const Recent = props => {
+class Recent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            listAnimes: []
+        }
+    }
 
-    const [listAnimes, setListAnimes] = useState([]);
-
-    const dataSend = async () =>{
+    async dataSend() {
         try{
-        
-            let response = await server.get(`/api/animes/recentes`)
-            let filtro = response.data
-            let novo = filtro.filter(obj => obj.Nome.indexOf('Dublado') == -1)
-            setListAnimes(novo)
-            
+            console.log(url)
+            const response = await server.get(url.ANIMES_URL)
+            console.log(response.data)
+            this.setState({listAnimes: response.data})
         }catch(err){
             console.log(err)
         }
     }
+    
+    componentDidMount() {
+        this.dataSend();
+    }
 
-    useEffect(() =>{
-        dataSend()  
-    } ,[])
-
-    return <>
-                <Header {...props} title={'RECENTES'} ></Header>
-                <Container style={{ backgroundColor :'#000', justifyContent : 'space-around'}}>
-                    
-                    {listAnimes &&
-                    
+    render() {
+        return <>
+                <Header {...this.props} title={'RECENTES'} ></Header>
+                <Container style={{ backgroundColor :'#000', justifyContent : 'space-around'}}> 
+                    {this.state.listAnimes &&
                         <FlatList
-                            data={listAnimes}
+                            data={this.state.listAnimes}
                             keyExtractor={(item, index) =>  item + index}
-                            
                             renderItem={({item : anime})=> {
                                 return <MiniCard 
                                             age
-                                            id={anime.Id} 
-                                            name={anime.Nome} 
-                                            img={anime.Imagem}
-                                            onPress={ () => props.navigation.navigate('Anime', { anime }) } 
+                                            id={anime.id} 
+                                            name={anime.name} 
+                                            img={anime.image}
+                                            onPress={ () => this.props.navigation.navigate('Anime', { anime }) } 
                                         />
                             }}
                             numColumns={3}
                         />
-
                     }
                 </Container>
-           </>
+            </>
+    }
 }
 
 export default Recent;

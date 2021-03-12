@@ -1,12 +1,12 @@
-import React, {Component, useEffect, useState} from 'react'
-import { FlatList, Text } from 'react-native'
+import React from 'react'
+import { FlatList } from 'react-native'
 import { Container } from './style'
 import MiniCard from '../../componets/miniCard'
 import server from '../../services/api'
 import Header from '../../componets/header'
 import url from '../../config/urls'
 
-class Recent extends Component {
+class Recent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

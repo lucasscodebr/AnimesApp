@@ -18,7 +18,6 @@ class Recent extends React.Component {
         try{
             console.log(url)
             const response = await server.get(url.ANIMES_URL)
-            console.log(response.data)
             this.setState({listAnimes: response.data})
         }catch(err){
             console.log(err)

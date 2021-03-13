@@ -50,31 +50,25 @@ class Anime extends React.Component {
         })
     }
    
-    async handleClickSave() {
+    async handleClickSaveFavorite() {
         try{
-
+            const storageResult = await AsyncStorage.getItem('@favorite')
+            const jsonArray = storageResult == null ? [] : JSON.parse(storageResult)
+            const isInDatabase = jsonArray.find(obj => obj.id == this.state.anime.id)    
+            if(isInDatabase){
+                const listWithRemove = jsonArray.filter(obj => obj.id != this.state.anime.id) 
+                await AsyncStorage.setItem('@favorite', JSON.stringify(listWithRemove))
+                this.setState({...this.state, colorButtonFavorite: "#fafafa"})
+            }else{
+                const saveAnime = {...this.state.anime}
+                jsonArray.push(saveAnime)
+                await AsyncStorage.setItem('@favorite', JSON.stringify(jsonArray))
+                this.setState({...this.state, colorButtonFavorite: "#ff0"})                
+            }
+            
         }catch(error){
-
-        }
-        const storageResult = await AsyncStorage.getItem('@favorite')
-        const jsonArray = storageResult == null ? [] : JSON.parse(storageResult)
-        const isInDatabase = jsonArray.find(obj => obj.Id == anime.Id)    
-        if(isInDatabase){
-            const listWithRemove = jsonArray.filter(obj => obj.Id != anime.Id) 
-            await AsyncStorage.setItem('@favorite', JSON.stringify(listWithRemove))
-            this.setState({...this.state, colorButtonFavorite: "#fafafa"})
-        }else{
-            const saveAnime = { 
-                                Id : anime.Id, 
-                                Nome: anime.Nome, 
-                                Imagem : anime.Imagem, 
-                                Ano : anime.Ano,
-                                Desc : anime.Desc,
-                                Categoria : anime.Categoria 
-                            }
-            jsonArray.push(saveAnime)
-            await AsyncStorage.setItem('@favorite', JSON.stringify(jsonArray))
-            this.setState({...this.state, colorButtonFavorite: "#ff0"})                
+            console.log(error)
+            err.sendPostErrorToApi("handleClickSaveFavorite", error);
         }
     }
 
@@ -90,7 +84,7 @@ class Anime extends React.Component {
                                     <ContainerTitle>
                                         <ButtonBack onPress={() => this.props.navigation.goBack()} />
                                         <TitleText>{this.state.anime.name}</TitleText>
-                                        <ButtonFavorite onPress={() => this.handleClickSave() }>
+                                        <ButtonFavorite onPress={() => this.handleClickSaveFavorite() }>
                                             <Icon name={'folder-special'} size={30} color={this.state.colorButtonFavorite} />
                                         </ButtonFavorite>
                                     </ContainerTitle>

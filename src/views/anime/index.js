@@ -17,17 +17,23 @@ class Anime extends React.Component {
             colorButtonFavorite: "#fafafa"
         }
     }
+    async handleGetEpisodesList(){
+        try{
+            const urlRequest = url.EPISODES_URL + this.props.route.params.anime.id + "/list"
+            let response = await server.get(urlRequest)
+            this.setState({...this.state, listEp: response.data})
+        }catch(error){
+            console.log(error)
+            server.post(url.ERRORS_URL, { method: "handleGetEpisodesList", error })
+            .then(result => console.log(result))
+            .catch(result => console.log(result))
+        }
+    }
 
     async dataSend(operation, id) {
         try{
             switch(operation){
                 case 1 : {
-                    const urlRequest = url.EPISODES_URL + "/list/"+ this.props.route.params.anime.id
-                    console.log(urlRequest)
-                    let response = await server.get(urlRequest)
-                    const list = response.data;
-                    console.log(list)
-                    this.setState({...this.state, listEp: list})
                 }
                 break;
                 case 2 : {
@@ -36,12 +42,6 @@ class Anime extends React.Component {
                     })
                 }
                 break;
-                default : {
-                    if(anime.Desc == null || anime.Desc == ""){
-                        let response = await server.get(`/odata/Animesdb?$filter=Id eq ${animeId}`)
-                        this.setState({...this.state, anime: response.data.value[0]})
-                    }
-                }
             }
 
             const dbString = await AsyncStorage.getItem('@favorito')
@@ -83,8 +83,7 @@ class Anime extends React.Component {
     }
 
     componentDidMount() {
-        this.dataSend()
-        this.dataSend(1)
+        this.handleGetEpisodesList();
     }
 
     render() { 
@@ -117,12 +116,11 @@ class Anime extends React.Component {
                                                 <CategoryText>{obj.name}</CategoryText> 
                                             </CategoryBox>)
                                         }
-                                    </ContainerCategory>
-                                    
-                                    {this.state.listEp.map(epsodio => <Epsodio key={`${epsodio.Id}`}
-                                                                    name={epsodio.Nome}
-                                                                    image={epsodio.Image}
-                                                                    onPress={() => handleClickPlayer(epsodio.Id)} />)}
+                                    </ContainerCategory>                 
+                                    {this.state.listEp.map(episodio => <Epsodio key={`${episodio.id}`}
+                                                                    name={episodio.title}
+                                                                    image={episodio.image}
+                                                                    onPress={() => this.handleClickPlayer(episodio.id)} />)}
                                 </ContainerScroll>
     }
 }

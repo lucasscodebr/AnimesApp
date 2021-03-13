@@ -6,7 +6,8 @@ const url = {
         CATEGORY_URL: BASE_URL + "/category/",
         EPISODES_URL: BASE_URL + "/episodes/",
         USER_URL: BASE_URL + "/user/",
-        VIDEOS_URL: BASE_URL + "/videos/"
+        VIDEOS_URL: BASE_URL + "/videos/",
+        ERRORS_URL: BASE_URL + "/errors"
 } 
 
 export default url; 

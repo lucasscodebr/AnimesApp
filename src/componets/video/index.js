@@ -2,16 +2,26 @@ import React from 'react'
 import { ContainerVideo } from './style';
 import VideoPlayer from 'react-native-video-controls';
 
-const Video = (props) => {
+class Video extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            arrayVideos: props.route.params.arrayVideos
+        }
+    }
 
-    const {urlVideo} = props.route.params
+    handleVideosPlayerError() {
 
-    return <ContainerVideo>
-                <VideoPlayer 
-                    source={{uri : urlVideo}} 
-                    onBack={ () => props.navigation.goBack() } 
-                    onError={() => console.warn('Erro ao carregar video')}  />
-           </ContainerVideo>
+    }
+
+    render() {
+        return <ContainerVideo>
+                    <VideoPlayer 
+                        source={{uri : this.state.arrayVideos[0].playerUrl}} 
+                        onBack={ () => this.props.navigation.goBack() } 
+                        onError={ () => this.handleVideosPlayerError() }  />
+                </ContainerVideo>
+    }
 }
 
 export default Video;

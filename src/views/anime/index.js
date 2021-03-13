@@ -1,5 +1,5 @@
 import React from 'react'
-import {ScrollView} from 'react-native'
+import {Alert, ScrollView} from 'react-native'
 import ButtonBack from '../../componets/arrowBack'
 import { ContainerScroll, ContainerTitle, ContainerTop, ImgBackground, TitleText, ContainerAge, AgeText, ContainerDescription, DescriptionText, ContainerCategory, CategoryBox, CategoryText, ButtonFavorite} from './style'
 import server from '../../services/api'
@@ -21,11 +21,9 @@ class Anime extends React.Component {
 
     async handleGetEpisodesList(){
         try{
-            const urlRequest = url.EPISODES_URL + this.props.route.params.anime.id + "/list"
-            let response = await server.get(urlRequest)
+            const response = await server.get(url.EPISODES_URL + this.props.route.params.anime.id + "/list")
             this.setState({...this.state, listEp: response.data})
         }catch(error){
-            console.log(error)
             err.sendPostErrorToApi("handleGetEpisodesList", error) 
         }
     }
@@ -39,15 +37,17 @@ class Anime extends React.Component {
                 this.setState({...this.state, colorButtonFavorite: "#ff0"})
             }  
         }catch(error) {
-            console.log(error)
             err.sendPostErrorToApi("handleIsFavorite", error) 
         }
     }
 
-    async handleClickPlayer(videoId) {
-        await server.get(`/api/episodioexes/links?id=${videoId}`).then(response => {
-            this.props.navigation.navigate('Video', {urlVideo : response.data[0].Endereco})
-        })
+    async handleClickPlayer(episodio) {
+        if(episodio.videos.length != 0) {
+            this.props.navigation.navigate("Video", { arrayVideos: episodio.videos })
+        } else {
+            err.sendPostErrorToApi("handleClickPlayer", "Not Found Any Video in the epsode : " + episodio.id)
+            Alert.alert("Not Found Any Video, The Admin was contacted!")
+        }
     }
    
     async handleClickSaveFavorite() {
@@ -65,9 +65,7 @@ class Anime extends React.Component {
                 await AsyncStorage.setItem('@favorite', JSON.stringify(jsonArray))
                 this.setState({...this.state, colorButtonFavorite: "#ff0"})                
             }
-            
         }catch(error){
-            console.log(error)
             err.sendPostErrorToApi("handleClickSaveFavorite", error);
         }
     }
@@ -79,7 +77,6 @@ class Anime extends React.Component {
 
     render() { 
         Icon.loadFont()
-
         return  this.state.anime != null && <ContainerScroll>
                                     <ContainerTitle>
                                         <ButtonBack onPress={() => this.props.navigation.goBack()} />
@@ -111,7 +108,7 @@ class Anime extends React.Component {
                                     {this.state.listEp.map(episodio => <Epsodio key={`${episodio.id}`}
                                                                     name={episodio.title}
                                                                     image={episodio.image}
-                                                                    onPress={() => this.handleClickPlayer(episodio.id)} />)}
+                                                                    onPress={() => this.handleClickPlayer(episodio)} />)}
                                 </ContainerScroll>
     }
 }

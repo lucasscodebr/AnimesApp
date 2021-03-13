@@ -1,6 +1,7 @@
 import React from 'react'
 import { ContainerVideo } from './style';
 import VideoPlayer from 'react-native-video-controls';
+import err from "../../class/Errors";
 
 class Video extends React.Component {
     constructor(props){
@@ -8,18 +9,16 @@ class Video extends React.Component {
         this.state = {
             arrayVideos: props.route.params.arrayVideos
         }
-    }
-
-    handleVideosPlayerError() {
-
+        this.episode = props.route.params.episode;
     }
 
     render() {
+
         return <ContainerVideo>
                     <VideoPlayer 
-                        source={{uri : this.state.arrayVideos[0].playerUrl}} 
+                        source={{ uri : this.state.arrayVideos[0].playerUrl }} 
                         onBack={ () => this.props.navigation.goBack() } 
-                        onError={ () => this.handleVideosPlayerError() }  />
+                        onError={ () => console.log("error") }  />
                 </ContainerVideo>
     }
 }

@@ -43,7 +43,7 @@ class Anime extends React.Component {
 
     async handleClickPlayer(episodio) {
         if(episodio.videos.length != 0) {
-            this.props.navigation.navigate("Video", { arrayVideos: episodio.videos })
+            this.props.navigation.navigate("Video", { arrayVideos: episodio.videos, episode : { id : episodio.id, title : episodio.title } })
         } else {
             err.sendPostErrorToApi("handleClickPlayer", "Not Found Any Video in the epsode : " + episodio.id)
             Alert.alert("Not Found Any Video, The Admin was contacted!")

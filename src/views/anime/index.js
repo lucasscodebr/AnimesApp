@@ -30,42 +30,35 @@ class Anime extends React.Component {
         }
     }
 
-    async dataSend(operation, id) {
+    async handleIsFavorite() {
         try{
-            switch(operation){
-                case 1 : {
-                }
-                break;
-                case 2 : {
-                    await server.get(`/api/episodioexes/links?id=${id}`).then(response => {
-                        this.props.navigation.navigate('Video', {urlVideo : response.data[0].Endereco})
-                    })
-                }
-                break;
-            }
-
-            const dbString = await AsyncStorage.getItem('@favorito')
+            const dbString = await AsyncStorage.getItem('@favorite')
             const json = dbString == null ? [] : JSON.parse(dbString)
-            const isFavorite = json.find(obj => obj.Id == animeId)
+            const isFavorite = json.find(obj => obj.id == this.state.anime.id)
             if(isFavorite) {
                 this.setState({...this.state, colorButtonFavorite: "#ff0"})
-            }
-        }catch(err) {
-            console.log('Error : ' + err)
+            }  
+        }catch(error) {
+            console.log(error)
+            server.post(url.ERRORS_URL, { method: "handleIsFavorite", error })
+            .then(result => console.log(result))
+            .catch(result => console.log(result)) 
         }
     }
 
-    handleClickPlayer(videoId) {
-        this.dataSend(2, videoId)
+    async handleClickPlayer(videoId) {
+        await server.get(`/api/episodioexes/links?id=${videoId}`).then(response => {
+            this.props.navigation.navigate('Video', {urlVideo : response.data[0].Endereco})
+        })
     }
    
     async handleClickSave() {
-        const databaseString = await AsyncStorage.getItem('@favorito')
-        const jsonArray = databaseString == null ? [] : JSON.parse(databaseString)
+        const storageResult = await AsyncStorage.getItem('@favorite')
+        const jsonArray = storageResult == null ? [] : JSON.parse(storageResult)
         const isInDatabase = jsonArray.find(obj => obj.Id == anime.Id)    
         if(isInDatabase){
             const listWithRemove = jsonArray.filter(obj => obj.Id != anime.Id) 
-            await AsyncStorage.setItem('@favorito', JSON.stringify(listWithRemove))
+            await AsyncStorage.setItem('@favorite', JSON.stringify(listWithRemove))
             this.setState({...this.state, colorButtonFavorite: "#fafafa"})
         }else{
             const saveAnime = { 
@@ -77,13 +70,14 @@ class Anime extends React.Component {
                                 Categoria : anime.Categoria 
                             }
             jsonArray.push(saveAnime)
-            await AsyncStorage.setItem('@favorito', JSON.stringify(jsonArray))
+            await AsyncStorage.setItem('@favorite', JSON.stringify(jsonArray))
             this.setState({...this.state, colorButtonFavorite: "#ff0"})                
         }
     }
 
     componentDidMount() {
         this.handleGetEpisodesList();
+        this.handleIsFavorite();
     }
 
     render() { 

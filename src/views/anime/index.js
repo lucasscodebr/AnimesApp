@@ -7,6 +7,7 @@ import Epsodio from '../../componets/episodes/index'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import url from '../../config/urls'
+import err from '../../class/Errors'
 
 class Anime extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class Anime extends React.Component {
             colorButtonFavorite: "#fafafa"
         }
     }
+
     async handleGetEpisodesList(){
         try{
             const urlRequest = url.EPISODES_URL + this.props.route.params.anime.id + "/list"
@@ -24,9 +26,7 @@ class Anime extends React.Component {
             this.setState({...this.state, listEp: response.data})
         }catch(error){
             console.log(error)
-            server.post(url.ERRORS_URL, { method: "handleGetEpisodesList", error })
-            .then(result => console.log(result))
-            .catch(result => console.log(result))
+            err.sendPostErrorToApi("handleGetEpisodesList", error) 
         }
     }
 
@@ -40,9 +40,7 @@ class Anime extends React.Component {
             }  
         }catch(error) {
             console.log(error)
-            server.post(url.ERRORS_URL, { method: "handleIsFavorite", error })
-            .then(result => console.log(result))
-            .catch(result => console.log(result)) 
+            err.sendPostErrorToApi("handleIsFavorite", error) 
         }
     }
 
@@ -53,6 +51,11 @@ class Anime extends React.Component {
     }
    
     async handleClickSave() {
+        try{
+
+        }catch(error){
+
+        }
         const storageResult = await AsyncStorage.getItem('@favorite')
         const jsonArray = storageResult == null ? [] : JSON.parse(storageResult)
         const isInDatabase = jsonArray.find(obj => obj.Id == anime.Id)    

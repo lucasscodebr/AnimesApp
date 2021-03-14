@@ -3,64 +3,64 @@ import { View, FlatList} from 'react-native';
 import server from '../../services/api';
 import Card from '../../componets/card/index'
 import Search from '../../componets/search/index';
+import url from '../../config/urls'
+import err from '../../class/Errors';
 
-const Main = (props) => {
-    
-    const [listAnimes, setListAnimes] = useState([]);
-    const [pageNumber, setPageNumber] = useState(0);
-    const [searchTitle, setSearchTitle] = useState('')
-
-    const dataSend = async (index) => {
-        try{
-            let response = await server.get(`/odata/Animesdb?$filter=substringof('${searchTitle}', Nome)&$skip=${pageNumber}`)
-            let filtro = response.data.value
-            let novo = filtro.filter(obj => obj.Nome.indexOf('Dublado') == -1)
-            
-            if( index == 1 )
-                setListAnimes([...listAnimes , ...novo] )
-            else
-                setListAnimes(novo)
-            
-            setPageNumber(pageNumber + 50)
-
-        }catch(err){
-            console.log(err)
+class Main extends React.Component {
+    constructor(props) {
+        super(props)
+        this.startState = {
+            listAnimes: [],
+            pageNumber: 0,
+            searchTitle: ''
+        }
+        this.state = {
+            ...this.startState
         }
     }
-    
-    useEffect(() => {
-    
-        dataSend()
 
-    },[])
-
-    const handleSearch = (text) => {
-        setPageNumber(0)
-        setSearchTitle(text)
+    async handleGetSearchAnimesList() {
+        try{
+            const response = await server.get(url.ANIMES_URL + `find/?name=${this.state.searchTitle}&page=${this.state.pageNumber}`)
+            this.setState({listAnimes: [...this.state.listAnimes, ...response.data]})
+            this.setState({pageNumber: this.state.pageNumber + 50})
+        }catch(error) {
+            err.sendPostErrorToApi("handleGetSearchAnimesList", "Error to get list animes by search")
+        }
     }
 
-    return  <View style={{height: '100%', backgroundColor : 'rgb(25, 25, 25)'}}>
-                <Search {...props} value={searchTitle} onChangeText={txt => handleSearch(txt)} onPress={() => { dataSend(); } } />
-                {  listAnimes &&                              
-                    <FlatList
-                        data={listAnimes}
-                        keyExtractor={(item , index) => (`${index+item.Id+pageNumber}`)}
-                        renderItem={({item : anime}) => {
-                            return <Card    onPress={ () => props.navigation.navigate('Anime', {anime}) } 
-                                            id={anime.Id} 
-                                            name={anime.Nome} 
-                                            img={anime.Imagem} 
-                                            category={anime.Categoria} 
-                                            description={anime.Desc} 
-                                            age={anime.Ano}
-                                    />
-                        }}
+    handleSearch (text) {
+        this.setState({...this.startState, searchTitle: text})
+    }
 
-                        onEndReached={() => dataSend(1)}
-                        onEndReachedThreshold={0.5}
-                    />
-                }
-            </View>
+    componentDidMount() {
+        this.handleGetSearchAnimesList()
+    }
+
+    render() {
+        return  <View style={{height: '100%', backgroundColor : 'rgb(25, 25, 25)'}}>
+                    <Search {...this.props} value={this.state.searchTitle} onChangeText={txt => this.handleSearch(txt)} onPress={() => { this.handleGetSearchAnimesList() } } />
+                    { this.state.listAnimes &&                              
+                        <FlatList
+                            data={this.state.listAnimes}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({item : anime}) => {
+                                return <Card    onPress={ () => this.props.navigation.navigate('Anime', {anime}) } 
+                                                id={anime.id} 
+                                                name={anime.name} 
+                                                img={anime.image} 
+                                                category={anime.category} 
+                                                description={anime.sinopse} 
+                                                age={anime.age}
+                                        />
+                            }}
+
+                            onEndReached={() => this.handleGetSearchAnimesList()}
+                            onEndReachedThreshold={0.5}
+                        />
+                    }
+                </View>
+    }
 }
 
 export default Main;

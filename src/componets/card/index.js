@@ -19,7 +19,7 @@ class Card extends React.PureComponent {
                                 <TitleText>{this.props.name}</TitleText>
                             </Line>
                             <Line2>         
-                                <CategoryText>{this.props.category}</CategoryText>
+                                <CategoryText>{this.props.category.map(obj => obj.name)}</CategoryText>
                             </Line2>
                             <Line3>
                                 <DescritionText>{this.props.description}</DescritionText>

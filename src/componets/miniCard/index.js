@@ -8,12 +8,12 @@ class MiniCard extends React.PureComponent {
                     <ImageAnime source={ {uri : this.props.img} }>
                     { (this.props.age != undefined) &&             
                         <ContainerEpsodio>
-                            <EpsodioText>{(this.props.name.indexOf(' - ') >= 0) && this.props.name.split(' - ')[1].split(' ')[1] }</EpsodioText>
+                            <EpsodioText>{this.props.name}</EpsodioText>
                         </ContainerEpsodio>
                     }
                     </ImageAnime>
                     <ContainerTitle>
-                        <TitleText>{ Platform.OS == 'ios' ? this.props.name.split(' - ')[0] : this.props.name.split(' - ')[0].substr(0, 16)  }</TitleText>
+                        <TitleText>{ Platform.OS == 'ios' ? this.props.name : this.props.name.substr(0, 16) }</TitleText>
                     </ContainerTitle>
                 </Container>
     }

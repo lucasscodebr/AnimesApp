@@ -13,7 +13,6 @@ class Video extends React.Component {
     }
 
     render() {
-
         return <ContainerVideo>
                     <VideoPlayer 
                         source={{ uri : this.state.arrayVideos[0].playerUrl }} 

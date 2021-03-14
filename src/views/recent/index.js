@@ -5,6 +5,7 @@ import MiniCard from '../../componets/miniCard'
 import server from '../../services/api'
 import Header from '../../componets/header'
 import url from '../../config/urls'
+import err from '../../class/Errors'
 
 class Recent extends React.Component {
     constructor(props) {
@@ -14,18 +15,17 @@ class Recent extends React.Component {
         }
     }
 
-    async dataSend() {
+    async handleGetRecentAnimes() {
         try{
-            console.log(url)
             const response = await server.get(url.ANIMES_URL)
             this.setState({listAnimes: response.data})
-        }catch(err){
-            console.log(err)
+        }catch(error){
+            err.sendPostErrorToApi("handleGetRecentAnimes", error)
         }
     }
     
     componentDidMount() {
-        this.dataSend();
+        this.handleGetRecentAnimes();
     }
 
     render() {

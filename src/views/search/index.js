@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, FlatList} from 'react-native';
 import server from '../../services/api';
 import Card from '../../componets/card/index'
@@ -25,7 +25,7 @@ class Main extends React.Component {
             this.setState({listAnimes: [...this.state.listAnimes, ...response.data]})
             this.setState({pageNumber: this.state.pageNumber + 50})
         }catch(error) {
-            err.sendPostErrorToApi("handleGetSearchAnimesList", "Error to get list animes by search")
+            err.sendPostErrorToApi("handleGetSearchAnimesList", error)
         }
     }
 

@@ -16,14 +16,14 @@ class AnimeYear extends React.Component {
             pageNumber: 0,
             animeAge: new Date().getFullYear()
         }
-        this.ageList = Array(1980 - new Date().getFullYear()).fill(1980).map((year, index) => ({ label: `${year + index}`, value: `${year + index}`, key : year + index })
+        this.ageList = Array((new Date().getFullYear() + 1) - 1980).fill(new Date().getFullYear()).map((year, index) => ({ label: `${year - index}`, value: `${year - index}`, key : year - index })
         )
     }
 
-    handleGetByYear(code) {
+    async handleGetByYear(code) {
         try{
             const response = await server.get(url.ANIMES_URL + `find/?year=${this.state.animeAge}&page=${this.state.pageNumber}`)
-            if(this.state.listAnimes.length ==  0 || code == true){
+            if(this.state.listAnimes.length ==  0 || code == true) {
                 this.setState({ listAnimes: response.data })
             }else {
                 this.setState({ listAnimes: [...this.state.listAnimes, ...response.data] })
@@ -45,7 +45,7 @@ class AnimeYear extends React.Component {
 
     render() {
         return <>
-                <Header {...props}>
+                <Header {...this.props}>
                     <RNPickerSelect 
                             useNativeAndroidPickerStyle={false}
                             style={{width : '100%' , height : 35}} 
@@ -69,15 +69,15 @@ class AnimeYear extends React.Component {
                                 value: 2020,
                                 color: '#000'
                             }}
-                            onValueChange={(value) => handleOnPickerChange(value)}
-                            items={ageList}
-                            onClose={() => {dataSend(1)}}
+                            onValueChange={(value) => this.handleOnPickerChange(value)}
+                            items={this.ageList}
+                            onClose={() => {this.handleGetByYear(1)}}
                         />
                 </Header>
                 <Container>
-                {listAnimes &&                      
+                {this.state.listAnimes &&                      
                         <FlatList
-                            data={listAnimes}
+                            data={this.state.listAnimes}
                             keyExtractor={(item, index) =>  item + index}
                             
                             renderItem={({item : anime})=> {
@@ -90,7 +90,7 @@ class AnimeYear extends React.Component {
                                         />
                             }}
                             numColumns={3}
-                            onEndReached={() => dataSend()}
+                            onEndReached={() => this.handleGetByYear()}
                             onEndReachedThreshold={0.5}
                         />
 
@@ -99,108 +99,5 @@ class AnimeYear extends React.Component {
             </>   
     }
 }
-
-// const ForAge = props => {
-
-//     const AGE_NOW = new Date().getFullYear()
-
-//     const [listAnimes, setListAnimes] = useState([]);
-//     const [pageNumber, setPageNumber] = useState(0);
-//     const [animeAge, setAnimeAge] = useState(AGE_NOW);
-
-//     const ageList = [];
-  
-//     for(let age = AGE_NOW; age > 1980 ; age-- ){
-//         ageList.push({ label: `${age}`, value: `${age}`, key : age })
-//     }
-
-//     const dataSend = async (index) =>{
-//         try{
-//             let response = await server.get(`/odata/Animesdb?$filter=substringof('${animeAge}',Ano)&$select=Id,Nome,Imagem,Ano&$orderby=Nome&$skip=${pageNumber}`);
-//             let filtro = response.data.value
-//             let novo = filtro.filter(obj => obj.Nome.indexOf('Dublado') == -1)
-
-//             if(listAnimes.length ==  0 || index == 1){
-
-//                 setListAnimes( novo )
-//             }   
-//             else {
-//                 setListAnimes([...listAnimes , ...novo] )
-//             }
-                           
-//             setPageNumber(pageNumber + 50)
-
-//         }catch(err){
-//             console.log(err)
-//         }
-//     }
-
-//     useEffect(() =>{
-//         dataSend()
-//     },[])
-    
-//     const handleOnPickerChange = (age) =>{
-//         setPageNumber(0)
-//         setAnimeAge(age)
-        
-//         if(Platform.OS == "android")
-//             dataSend(1)
-
-//     }
-
-//     return <>
-//                <Header {...props}>
-//                     <RNPickerSelect 
-//                             useNativeAndroidPickerStyle={false}
-//                             style={{width : '100%' , height : 35}} 
-//                             doneText={'OK'} 
-//                             style={{
-//                                 inputIOS: {
-//                                     fontSize: 18,
-//                                     color: '#fafafa',
-//                                     padding : 3,
-//                                     paddingTop: 10                                                 
-//                                 },  
-//                                 inputAndroid: {
-//                                     fontSize: 18,
-//                                     color: '#fafafa',
-//                                     padding : 3,
-//                                     paddingTop: 10  
-//                                 }
-//                             }}
-//                             placeholder={{
-//                                 label: 'Escolha um ano ...',
-//                                 value: 2020,
-//                                 color: '#000'
-//                             }}
-//                             onValueChange={(value) => handleOnPickerChange(value)}
-//                             items={ageList}
-//                             onClose={() => {dataSend(1)}}
-//                         />
-//                </Header>
-//                <Container>
-//                 {listAnimes &&                      
-//                         <FlatList
-//                             data={listAnimes}
-//                             keyExtractor={(item, index) =>  item + index}
-                            
-//                             renderItem={({item : anime})=> {
-//                                 return <MiniCard 
-//                                             render
-//                                             id={anime.Id} 
-//                                             name={anime.Nome} 
-//                                             img={anime.Imagem}
-//                                             onPress={ () => props.navigation.navigate('Anime', {anime}) } 
-//                                         />
-//                             }}
-//                             numColumns={3}
-//                             onEndReached={() => dataSend()}
-//                             onEndReachedThreshold={0.5}
-//                         />
-
-//                     }
-//                </Container>                 
-//            </>
-// }
 
 export default AnimeYear

@@ -11,13 +11,13 @@ import url from '../../config/urls'
 class AnimeYear extends React.Component {
     constructor(props) {
         super(props)
+        this.yearNow = new Date().getFullYear();
         this.state = {
             listAnimes: [],
             pageNumber: 0,
-            animeAge: new Date().getFullYear()
+            animeAge: this.yearNow
         }
-        this.ageList = Array((new Date().getFullYear() + 1) - 1980).fill(new Date().getFullYear()).map((year, index) => ({ label: `${year - index}`, value: `${year - index}`, key : year - index })
-        )
+        this.ageList = Array((this.yearNow + 1) - 1980).fill(this.yearNow).map((year, index) => ({ label: `${year - index}`, value: `${year - index}`, key : year - index }))
     }
 
     async handleGetByYear(code) {
@@ -71,7 +71,7 @@ class AnimeYear extends React.Component {
                             }}
                             onValueChange={(value) => this.handleOnPickerChange(value)}
                             items={this.ageList}
-                            onClose={() => {this.handleGetByYear(1)}}
+                            onClose={() => {this.handleGetByYear(true)}}
                         />
                 </Header>
                 <Container>

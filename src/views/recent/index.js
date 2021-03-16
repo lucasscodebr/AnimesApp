@@ -37,11 +37,7 @@ class Recent extends React.Component {
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) =>  item + index}
                             renderItem={({item : anime})=> {
-                                return <MiniCard 
-                                            age
-                                            id={anime.id} 
-                                            name={anime.name} 
-                                            img={anime.image}
+                                return <MiniCard anime={anime}
                                             onPress={ () => this.props.navigation.navigate('Anime', { anime }) } 
                                         />
                             }}

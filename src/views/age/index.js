@@ -79,14 +79,9 @@ class AnimeYear extends React.Component {
                         <FlatList
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) =>  item + index}
-                            
                             renderItem={({item : anime})=> {
-                                return <MiniCard 
-                                            render
-                                            id={anime.Id} 
-                                            name={anime.Nome} 
-                                            img={anime.Imagem}
-                                            onPress={ () => props.navigation.navigate('Anime', {anime}) } 
+                                return <MiniCard anime={anime}
+                                            onPress={ () => this.props.navigation.navigate('Anime', {anime}) } 
                                         />
                             }}
                             numColumns={3}

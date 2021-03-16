@@ -3,17 +3,21 @@ import {Platform} from 'react-native'
 import {Container, ImageAnime, ContainerTitle, TitleText, ContainerEpsodio, EpsodioText} from './style'
 
 class MiniCard extends React.PureComponent {
+    constructor(props) {
+        super(props)
+    }
+
     render(){
-        return  <Container onPress={this.props.onPress} key={this.props.id}>
-                    <ImageAnime source={ {uri : this.props.img} }>
-                    { (this.props.age != undefined) &&             
+        return  <Container onPress={this.props.onPress} key={this.props.anime.id}>
+                    <ImageAnime source={ {uri : this.props.anime.image} }>
+                    { (this.props.anime.age != undefined) &&             
                         <ContainerEpsodio>
-                            <EpsodioText>{this.props.name}</EpsodioText>
+                            <EpsodioText>{this.props.anime.name}</EpsodioText>
                         </ContainerEpsodio>
                     }
                     </ImageAnime>
                     <ContainerTitle>
-                        <TitleText>{ Platform.OS == 'ios' ? this.props.name : this.props.name.substr(0, 16) }</TitleText>
+                        <TitleText>{ Platform.OS == 'ios' ? this.props.anime.name : this.props.anime.name.substr(0, 16) }</TitleText>
                     </ContainerTitle>
                 </Container>
     }

@@ -4,62 +4,55 @@ import { Container } from './style'
 import MiniCard from '../../componets/miniCard'
 import server from '../../services/api'
 import Header from '../../componets/header'
+import url from '../../config/urls'
+import err from '../../class/Errors'
 
-const Popular = props => {
+class Popular extends React.Component {
+    constructor(props) {
+        super(props)
+        this.initialState = { listAnimes: [], pageNumber: 0 }
+        this.state = { ...this.initialState }
+    }
 
-    const [listAnimes, setListAnimes] = useState([]);
-    const [pageNumber, setPageNumber] = useState(0);
-
-    const dataSend = async () =>{
+    async handleGetPopularAnimes() {
         try{
-
-            console.log(pageNumber)
-            let response = await server.get(`/odata/Animesdb?$select=Id,Nome,Imagem,Rank&$orderby=Rank desc&$skip=${pageNumber}&$inlinecount=allpages`)
-            let filtro = response.data.value
-            let novo = filtro.filter(obj => obj.Nome.indexOf('Dublado') == -1)
-
-            if(listAnimes.length ==  0)
-                setListAnimes( novo )
-            else 
-                setListAnimes([...listAnimes , ...novo] )
-                        
-            setPageNumber(pageNumber + 50)
-            
-        }catch(err){
-            console.log(err)
+            const response = await server.get(url.ANIMES_URL + "find/?orderBy=DESC")
+            if(this.state.listAnimes.length == 0) {
+                this.setState({ listAnimes: response.data })
+            } else {
+                this.setState({ listAnimes: [...this.state.listAnimes, ...response.data] })
+            }             
+            this.setState({ pageNumber: this.state.pageNumber + 50 })
+        }catch(error){
+            err.sendPostErrorToApi("handleGetPopularAnimes", error)
         }
     }
 
-    useEffect(() =>{
-        dataSend()
-    } ,[])
+    componentDidMount() {
+        this.handleGetPopularAnimes()
+    }
 
-    return <>
-                <Header {...props} title={'POPULAR'}></Header>
-                <Container>
-                    {listAnimes &&
-                    
-                        <FlatList
-                            data={listAnimes}
-                            keyExtractor={(item, index) =>  item + index}
-                            
-                            renderItem={({item : anime})=> {
-                                return <MiniCard 
-                                            id={anime.Id} 
-                                            name={anime.Nome} 
-                                            img={anime.Imagem}
-                                            age={anime.Ano}
-                                            onPress={ () => props.navigation.navigate('Anime', { anime }) } 
-                                        />
-                            }}
-                            numColumns={3}
-                            onEndReached={() => dataSend()}
-                            onEndReachedThreshold={0.5}
-                        />
-
-                    }
-            </Container>
-           </>
+    render() {
+        return <>
+                    <Header {...this.props} title={'POPULAR'}></Header>
+                    <Container>
+                        {this.state.listAnimes &&
+                            <FlatList
+                                data={this.state.listAnimes}
+                                keyExtractor={(item, index) =>  item + index}
+                                renderItem={({item : anime}) => (
+                                    <MiniCard anime={anime} 
+                                        onPress={ () => this.props.navigation.navigate('Anime', { anime }) }
+                                    />
+                                )}
+                                numColumns={3}
+                                onEndReached={() => this.handleGetPopularAnimes()}
+                                onEndReachedThreshold={0.5}
+                            />
+                        }
+                    </Container>
+                </>
+    }
 }
 
 export default Popular;

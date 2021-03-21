@@ -5,56 +5,53 @@ import { Container } from './style'
 import RNPickerSelect from 'react-native-picker-select';
 import server from '../../services/api'
 import MiniCard from '../../componets/miniCard'
+import err from '../../class/Errors'
+import url from '../../config/urls/index'
 
-const Category = (props) => {
-
-    const [categoryList, setCategoryList] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('Romance');
-    const [pageNumber, setPageNumber] = useState(0)
-    const [listAnimes, setListAnime] = useState([])
-
-    const dataSend = async (index) => {
-        try{
-            if(index == 1){
-
-                let response = await server.get('/api/categoria')
-                setCategoryList(response.data.filter(obj => obj.Nome != 'Dublado').map(obj => { return {label : obj.Nome, key : obj.Id, value : obj.Nome} }))
-
-            }else{
-                
-                let response = await server.get(`/odata/Animesdb?$filter=substringof('${selectedCategory}',Categoria)&$select=Id,Nome,Imagem,Ano&$orderby=Nome&$skip=${pageNumber}&$inlinecount=allpages`)
-                let filtro = response.data.value
-                let novo = filtro.filter(obj => obj.Nome.indexOf('Dublado') == -1)
-
-                if(index == 2)
-                    setListAnime([...listAnimes, ...novo])
-                else
-                    setListAnime(novo)
-
-                setPageNumber(pageNumber + 50)
-            }
-
-        }catch(err){
-            console.log(err)
+class Category extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            categoryList: [],
+            selectedCategory: 'Romance',
+            pageNumber: 0,
+            listAnimes: []
         }
     }
 
-    useEffect(() => {
-        dataSend(1)
-        dataSend()
-    },[])
-
-    const handlePickerChange = (category) =>{
-        setPageNumber(0)
-        setSelectedCategory(category)
-
-        if(Platform.OS =='android')
-            dataSend()
+    async handleGetAllCategory() {
+        try{
+            const response = await server.get(url.CATEGORY_URL)
+            this.setState({categoryList: response.data.map(obj => ({key: obj.id, label: obj.name, value: obj.name}))})
+        }catch(error) {
+            err.sendPostErrorToApi('handleGetAllCategory', error)
+        }
     }
 
-    return <>
-            { !categoryList.length > 0 ? <Header {...props} title={'CATEGORIA'}></Header> :
-                <Header {...props} >                                 
+    async handleGetAnimesByCategory() {
+        try{
+            const response = await server.get(url.ANIMES_URL + `?category=${selectedCategory}&page=${pageNumber}`)
+            this.setState({listAnimes: [...this.state.listAnimes, ...response.data], pageNumber: this.state.pageNumber + 50})
+        }catch(error) {
+            err.sendPostErrorToApi('handleGetAnimesByCategory', error)
+        }
+    }
+
+    handlePickerChange(categoryName) {
+        this.setState({pageNumber: 0, selectedCategory: categoryName})
+        if(Platform.OS =='android') {
+            this.handleGetAnimesByCategory()
+        }   
+    }
+
+    componentDidMount() {
+        this.handleGetAllCategory()
+    }
+
+    render() {
+        return <>
+            { !this.state.categoryList.length > 0 ? <Header {...this.props} title={'CATEGORIA'}></Header> :
+                <Header {...this.props} >                                 
                         <RNPickerSelect 
                             useNativeAndroidPickerStyle={false}
                             style={{width : '100%' , height : 35}} 
@@ -78,34 +75,30 @@ const Category = (props) => {
                                 value: 'Romance',
                                 color: '#000'
                             }}
-                            onValueChange={(value) => handlePickerChange(value)}
-                            items={categoryList}
-                            onClose={() => dataSend()}
+                            onValueChange={(value) => this.handlePickerChange(value)}
+                            items={this.state.categoryList}
+                            onClose={() => this.handleGetAnimesByCategory()}
                         />
                </Header>}
             <Container >
-            {listAnimes &&                       
+            {this.state.listAnimes &&                       
                         <FlatList
-                            data={listAnimes}
+                            data={this.state.listAnimes}
                             keyExtractor={(item, index) =>  item + index}
-                            
                             renderItem={({item : anime})=> {
-                                return <MiniCard 
-                                            render
-                                            id={anime.Id} 
-                                            name={anime.Nome} 
-                                            img={anime.Imagem}
-                                            onPress={ () => props.navigation.navigate('Anime', { anime }) } 
+                                return <MiniCard anime={anime}
+                                            onPress={ () => this.props.navigation.navigate('Anime', { anime }) } 
                                         />
                             }}
                             numColumns={3}
-                            onEndReached={() => dataSend(2)}
+                            onEndReached={() => this.handleGetAnimesByCategory()}
                             onEndReachedThreshold={0.5}
                         />
 
                     }
             </Container>
            </>
+    }
 }
 
 export default Category

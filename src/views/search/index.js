@@ -45,13 +45,8 @@ class Main extends React.Component {
                             data={this.state.listAnimes}
                             keyExtractor={(item) => item.id}
                             renderItem={({item : anime}) => {
-                                return <Card    onPress={ () => this.props.navigation.navigate('Anime', {anime}) } 
-                                                id={anime.id} 
-                                                name={anime.name} 
-                                                img={anime.image} 
-                                                category={anime.category} 
-                                                description={anime.sinopse} 
-                                                age={anime.age}
+                                return <Card anime={anime} 
+                                             onPress={ () => this.props.navigation.navigate('Anime', {anime}) } 
                                         />
                             }}
 

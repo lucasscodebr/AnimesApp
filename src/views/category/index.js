@@ -31,7 +31,6 @@ class Category extends React.Component {
     async handleGetAnimesByCategory() {
         try{
             const response = await server.get(url.ANIMES_URL + `?category=${selectedCategory}&page=${pageNumber}`)
-            console.log(response)
             this.setState({listAnimes: [...this.state.listAnimes, ...response.data], pageNumber: this.state.pageNumber + 50})
         }catch(error) {
             err.sendPostErrorToApi('handleGetAnimesByCategory', error)

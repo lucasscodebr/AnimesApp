@@ -13,7 +13,7 @@ class Category extends React.Component {
         super(props)
         this.state = {
             categoryList: [],
-            selectedCategory: 'Romance',
+            selectedCategory: 1,
             pageNumber: 0,
             listAnimes: []
         }
@@ -22,7 +22,7 @@ class Category extends React.Component {
     async handleGetAllCategory() {
         try{
             const response = await server.get(url.CATEGORY_URL)
-            this.setState({categoryList: response.data.map(obj => ({key: obj.id, label: obj.name, value: obj.name}))})
+            this.setState({categoryList: response.data.map(obj => ({key: obj.id, label: obj.name, value: obj.id}))})
         }catch(error) {
             err.sendPostErrorToApi('handleGetAllCategory', error)
         }
@@ -30,9 +30,9 @@ class Category extends React.Component {
 
     async handleGetAnimesByCategory() {
         try{
-            const response = await server.get(url.ANIMES_URL + `?category=${selectedCategory}&page=${pageNumber}`)
+            const response = await server.get(url.ANIMES_URL + `${this.state.selectedCategory}/category`)
             console.log(response.data)
-            this.setState({listAnimes: [...this.state.listAnimes, ...response.data], pageNumber: this.state.pageNumber + 50})
+            this.setState({listAnimes: response.data, pageNumber: this.state.pageNumber + 50})
         }catch(error) {
             err.sendPostErrorToApi('handleGetAnimesByCategory', error)
         }
@@ -47,6 +47,7 @@ class Category extends React.Component {
 
     componentDidMount() {
         this.handleGetAllCategory()
+        this.handleGetAnimesByCategory()
     }
 
     render() {

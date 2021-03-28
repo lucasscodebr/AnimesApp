@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {FlatList, Platform} from 'react-native'
 import {Container} from './style'
 import RNPickerSelect from 'react-native-picker-select';

@@ -6,7 +6,6 @@ import Popular from '../popular/stack'
 import ForAge from '../age/stack'
 import Category from '../category/stack'
 import Favorites from '../favorites/stack'
-import AddAnimes from '../administrator/anime/stack'
 
 const Drawer = createDrawerNavigator()
 
@@ -19,7 +18,6 @@ const DrawerComponent = (props) =>  {
                 <Drawer.Screen name={'CATEGORIA'} component={Category} />
                 <Drawer.Screen name={'ANO DE LANCAMENTO'} component={ForAge} />
                 <Drawer.Screen name={'MINHA LISTA'} component={Favorites} />
-                <Drawer.Screen name={'ADD ANIME'} component={AddAnimes} />
             </Drawer.Navigator>
             
 }

@@ -55,10 +55,10 @@ export const TitleText = styled.Text`
     color: rgb(0, 255, 48);
 `
 export const ContainerEpsodio = styled.View`
-    width: 35px;
+    width: 50px;
     align-items: center;
     background-color: rgb(23, 23, 23);
-    padding: 2px;
+    padding: 4px;
     opacity: 0.6;
 `
 export const EpsodioText = styled.Text`

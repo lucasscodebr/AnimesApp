@@ -17,18 +17,13 @@ import {
 } from '../styles/views/Animes'
 import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import StorageService from '../services/StorageService'
 import AxiosService from '../services/AxiosService'
 
 export default class Anime extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            anime: props.route.params.anime,
-            listEp: [],
-            colorButtonFavorite: '#fafafa',
-        }
+        this.state = {anime: props.route.params.anime, episodes: [], color: '#fafafa'}
         this.storage = StorageService.getInstance()
         this.http = AxiosService.getInstance()
     }
@@ -36,21 +31,10 @@ export default class Anime extends React.Component {
     async handleGetEpisodesList() {
         try {
             const response = await this.http.findEpisodesByAnimeId(this.state.anime.id)
-            this.setState({...this.state, listEp: response})
+            const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
+            this.setState({episodes: response, color: exists ? '#ff0' : this.state.color})
         } catch (error) {
             this.http.saveError('handleGetEpisodesList', error)
-        }
-    }
-
-    async handleIsFavorite() {
-        try {
-            const json = await this.storage.getFavorite()
-            const isFavorite = json.find((obj) => obj.id === this.state.anime.id)
-            if (isFavorite) {
-                this.setState({...this.state, colorButtonFavorite: '#ff0'})
-            }
-        } catch (error) {
-            this.http.saveError('handleIsFavorite', error)
         }
     }
 
@@ -60,8 +44,6 @@ export default class Anime extends React.Component {
                 arrayVideos: episodio.videos,
                 episode: {id: episodio.id, title: episodio.title},
             })
-        } else {
-            this.http.saveError('handleClickPlayer', 'Not Found Any Video in the episode : ' + episodio.id)
         }
     }
 
@@ -70,10 +52,10 @@ export default class Anime extends React.Component {
             const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
             if (exists) {
                 this.storage.deleteFavorite(this.state.anime.id)
-                this.setState({colorButtonFavorite: '#fafafa'})
+                this.setState({color: '#fafafa'})
             } else {
                 this.storage.saveOneFavorite(this.state.anime)
-                this.setState({colorButtonFavorite: '#ff0'})
+                this.setState({color: '#ff0'})
             }
         } catch (error) {
             this.http.saveError('handleClickSaveFavorite', error)
@@ -82,7 +64,6 @@ export default class Anime extends React.Component {
 
     componentDidMount() {
         this.handleGetEpisodesList()
-        this.handleIsFavorite()
     }
 
     render() {
@@ -94,7 +75,7 @@ export default class Anime extends React.Component {
                         <ArrowBack onPress={() => this.props.navigation.goBack()} />
                         <TitleText>{this.state.anime.name}</TitleText>
                         <ButtonFavorite onPress={() => this.handleClickSaveFavorite()}>
-                            <Icon name={'folder-special'} size={30} color={this.state.colorButtonFavorite} />
+                            <Icon name={'folder-special'} size={30} color={this.state.color} />
                         </ButtonFavorite>
                     </ContainerTitle>
                     <ContainerTop>
@@ -117,7 +98,7 @@ export default class Anime extends React.Component {
                                 </CategoryBox>
                             ))}
                     </ContainerCategory>
-                    {this.state.listEp.map((episode) => (
+                    {this.state.episodes.map((episode) => (
                         <Episode key={episode.id} episode={episode} onPress={() => this.handleClickPlayer(episode)} />
                     ))}
                 </ContainerScroll>

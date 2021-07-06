@@ -3,9 +3,7 @@ import {FlatList, Platform} from 'react-native'
 import {Container} from '../styles/views/Date'
 import RNPickerSelect from 'react-native-picker-select'
 import {Header, MiniCard} from '../components'
-import server from '../services/api'
-import err from '../class/Errors'
-import url from '../config/urls'
+import AxiosServices from '../services/AxiosService'
 
 export default class AnimeYear extends React.Component {
     constructor(props) {
@@ -23,30 +21,28 @@ export default class AnimeYear extends React.Component {
                 value: `${year - index}`,
                 key: year - index,
             }))
+        this.http = AxiosServices.getInstance()
     }
 
     async handleGetByYear(code) {
         try {
-            const response = await server.get(
-                url.ANIMES_URL +
-                    `find/?year=${this.state.animeAge}&page=${this.state.pageNumber}`,
-            )
-            if (this.state.listAnimes.length == 0 || code == true) {
-                this.setState({listAnimes: response.data})
+            const response = await this.http.findAnimesByYear(this.state.animeAge, this.state.pageNumber)
+            if (this.state.listAnimes.length === 0 || code === true) {
+                this.setState({listAnimes: response})
             } else {
                 this.setState({
-                    listAnimes: [...this.state.listAnimes, ...response.data],
+                    listAnimes: [...this.state.listAnimes, ...response],
                 })
             }
             this.setState({pageNumber: this.state.pageNumber + 50})
         } catch (error) {
-            err.sendPostErrorToApi('handleGetByYear', error)
+            this.http.saveError('handleGetByYear', error)
         }
     }
 
     handleOnPickerChange(year) {
         this.setState({pageNumber: 0, animeAge: year})
-        if (Platform.OS == 'android') this.handleGetByYear(true)
+        if (Platform.OS === 'android') this.handleGetByYear(true)
     }
 
     componentDidMount() {
@@ -80,9 +76,7 @@ export default class AnimeYear extends React.Component {
                             value: 2020,
                             color: '#000',
                         }}
-                        onValueChange={(value) =>
-                            this.handleOnPickerChange(value)
-                        }
+                        onValueChange={(value) => this.handleOnPickerChange(value)}
                         items={this.ageList}
                         onClose={() => {
                             this.handleGetByYear(true)
@@ -95,17 +89,7 @@ export default class AnimeYear extends React.Component {
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) => item + index}
                             renderItem={({item: anime}) => {
-                                return (
-                                    <MiniCard
-                                        anime={anime}
-                                        onPress={() =>
-                                            this.props.navigation.navigate(
-                                                'Anime',
-                                                {anime},
-                                            )
-                                        }
-                                    />
-                                )
+                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
                             }}
                             numColumns={3}
                             onEndReached={() => this.handleGetByYear()}

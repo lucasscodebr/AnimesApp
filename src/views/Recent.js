@@ -1,10 +1,8 @@
 import React from 'react'
 import {FlatList} from 'react-native'
 import {Container} from '../styles/views/Recent'
-import server from '../services/api'
 import {Header, MiniCard} from '../components'
-import url from '../config/urls'
-import err from '../class/Errors'
+import AxiosServices from '../services/AxiosService'
 
 export default class Recent extends React.Component {
     constructor(props) {
@@ -12,14 +10,15 @@ export default class Recent extends React.Component {
         this.state = {
             listAnimes: [],
         }
+        this.http = AxiosServices.getInstance()
     }
 
     async handleGetRecentAnimes() {
         try {
-            const response = await server.get(url.ANIMES_URL)
-            this.setState({listAnimes: response.data})
+            const result = this.http.findAnimesRecents()
+            this.setState({listAnimes: result})
         } catch (error) {
-            err.sendPostErrorToApi('handleGetRecentAnimes', error)
+            this.http.saveError('handleGetRecentAnimes', error)
         }
     }
 
@@ -41,17 +40,7 @@ export default class Recent extends React.Component {
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) => item + index}
                             renderItem={({item: anime}) => {
-                                return (
-                                    <MiniCard
-                                        anime={anime}
-                                        onPress={() =>
-                                            this.props.navigation.navigate(
-                                                'Anime',
-                                                {anime},
-                                            )
-                                        }
-                                    />
-                                )
+                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
                             }}
                             numColumns={3}
                         />

@@ -13,6 +13,48 @@ export default class AxiosService {
         return this.instance
     }
 
+    async searchAnimes(name, category, age, page, size, orderBy) {
+        name = name || ''
+        category = category || ''
+        age = age || ''
+        page = page || 0
+        size = size || 50
+        orderBy = orderBy || 'DESC'
+
+        try {
+            const response = await this.http.get('animes/find/?name=' + name + '&category=' + category + '&age=' + age + '&page=' + page + '&size=' + size + '&orderBy=' + orderBy)
+            return response.data
+        } catch (error) {
+            return []
+        }
+    }
+
+    async findAllByCategory(category, page) {
+        return await this.searchAnimes(null, category, null, page)
+    }
+
+    async findAllCategory() {
+        try {
+            const response = await this.http.get('category')
+            return response.data
+        } catch (error) {
+            return []
+        }
+    }
+
+    async findAnimesByYear(age, page) {
+        return await this.searchAnimes(null, null, age, page)
+    }
+
+    async findAnimesRecents() {
+        try {
+            const response = await this.searchAnimes()
+            return response.data
+        } catch (error) {
+            return []
+        }
+    }
+
     async findAllAnimes(page) {
         try {
             const response = await this.http.get('animes?page=' + page)

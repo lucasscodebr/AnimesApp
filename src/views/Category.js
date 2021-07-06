@@ -3,48 +3,40 @@ import {FlatList, Platform} from 'react-native'
 import {Header, MiniCard} from '../components'
 import {Container} from '../styles/views/Category'
 import RNPickerSelect from 'react-native-picker-select'
-import server from '../services/api'
-import err from '../class/Errors'
-import url from '../config/urls/index'
+import AxiosServices from '../services/AxiosService'
 
 export default class Category extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            categoryList: [],
-            selectedCategory: 1,
-            pageNumber: 0,
-            listAnimes: [],
+            categories: [],
+            selectedCategory: 'romance',
+            page: 0,
+            list: [],
         }
+        this.http = AxiosServices.getInstance()
     }
 
     async handleGetAllCategory() {
         try {
-            const response = await server.get(url.CATEGORY_URL)
+            const result = await this.http.findAllCategory()
             this.setState({
-                categoryList: response.data.map((obj) => ({
-                    key: obj.id,
-                    label: obj.name,
-                    value: obj.id,
-                })),
+                categories: result.map((obj) => ({key: obj.id, label: obj.name, value: obj.slugify})),
             })
         } catch (error) {
-            err.sendPostErrorToApi('handleGetAllCategory', error)
+            this.http.saveError('handleGetAllCategory', error)
         }
     }
 
     async handleGetAnimesByCategory() {
         try {
-            const response = await server.get(
-                url.ANIMES_URL + `${this.state.selectedCategory}/category`,
-            )
-            console.log(response.data)
+            const response = await this.http.findAllByCategory(this.state.selectedCategory, this.state.page)
             this.setState({
-                listAnimes: response.data,
-                pageNumber: this.state.pageNumber + 50,
+                list: response,
+                page: this.state.page + 50,
             })
         } catch (error) {
-            err.sendPostErrorToApi('handleGetAnimesByCategory', error)
+            this.http.saveError('handleGetAnimesByCategory', error)
         }
     }
 
@@ -63,7 +55,7 @@ export default class Category extends React.Component {
     render() {
         return (
             <>
-                {!this.state.categoryList.length > 0 ? (
+                {!this.state.categories.length > 0 ? (
                     <Header {...this.props} title={'CATEGORIA'}></Header>
                 ) : (
                     <Header {...this.props}>
@@ -90,36 +82,22 @@ export default class Category extends React.Component {
                                 value: 'Romance',
                                 color: '#000',
                             }}
-                            onValueChange={(value) =>
-                                this.handlePickerChange(value)
-                            }
-                            items={this.state.categoryList}
+                            onValueChange={(value) => this.handlePickerChange(value)}
+                            items={this.state.categories}
                             onClose={() => this.handleGetAnimesByCategory()}
                         />
                     </Header>
                 )}
                 <Container>
-                    {this.state.listAnimes && (
+                    {this.state.list && (
                         <FlatList
-                            data={this.state.listAnimes}
+                            data={this.state.list}
                             keyExtractor={(item, index) => item + index}
                             renderItem={({item: anime}) => {
-                                return (
-                                    <MiniCard
-                                        anime={anime}
-                                        onPress={() =>
-                                            this.props.navigation.navigate(
-                                                'Anime',
-                                                {anime},
-                                            )
-                                        }
-                                    />
-                                )
+                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
                             }}
                             numColumns={3}
-                            onEndReached={() =>
-                                this.handleGetAnimesByCategory()
-                            }
+                            onEndReached={() => this.handleGetAnimesByCategory()}
                             onEndReachedThreshold={0.5}
                         />
                     )}

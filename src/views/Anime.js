@@ -27,7 +27,7 @@ export default class Anime extends React.Component {
     async handleClickPlayer(episodio) {
         if (episodio.videos.length !== 0) {
             this.props.navigation.navigate('Video', {
-                arrayVideos: episodio.videos,
+                array: episodio.videos,
                 episode: {id: episodio.id, title: episodio.title},
             })
         }

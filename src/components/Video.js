@@ -6,7 +6,7 @@ export default class Video extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            arrayVideos: props.route.params.arrayVideos,
+            array: props.route.params.array,
         }
         this.episode = props.route.params.episode
     }
@@ -14,11 +14,7 @@ export default class Video extends React.Component {
     render() {
         return (
             <ContainerVideo>
-                <VideoPlayer
-                    source={{uri: this.state.arrayVideos[0].playerUrl}}
-                    onBack={() => this.props.navigation.goBack()}
-                    onError={() => console.log('error')}
-                />
+                <VideoPlayer source={{uri: this.state.array[0].url}} onBack={() => this.props.navigation.goBack()} onError={() => console.log('error')} />
             </ContainerVideo>
         )
     }

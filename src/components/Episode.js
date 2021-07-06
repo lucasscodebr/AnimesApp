@@ -3,7 +3,7 @@ import {ContainerEpisode, ContainerText, DescriptionText, ImgEpisode} from '../s
 
 const Episode = (props) => {
     return (
-        <ContainerEpisode onPress={props.episode.onPress}>
+        <ContainerEpisode onPress={props.onPress}>
             <ImgEpisode source={{uri: props.episode.thumbnail}} />
             <ContainerText>
                 <DescriptionText>Episode : {props.episode.number}</DescriptionText>

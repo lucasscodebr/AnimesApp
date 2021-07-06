@@ -1,6 +1,6 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
-import Anime from '../anime'
+import Anime from '../AnimeView'
 import Video from '../../componets/video'
 import ForAge from '../age'
 

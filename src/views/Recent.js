@@ -1,7 +1,5 @@
 import React from 'react'
-import {FlatList} from 'react-native'
-import {Container} from '../styles/views/Recent'
-import {Header, MiniCard} from '../components'
+import {RenderCard} from '../components'
 import AxiosServices from '../services/AxiosService'
 
 export default class Recent extends React.Component {
@@ -27,24 +25,6 @@ export default class Recent extends React.Component {
     }
 
     render() {
-        return (
-            <>
-                <Header {...this.props} title={'RECENTES'}></Header>
-                <Container
-                    style={{
-                        backgroundColor: '#000',
-                        justifyContent: 'space-around',
-                    }}>
-                    {this.state.listAnimes && (
-                        <FlatList
-                            data={this.state.listAnimes}
-                            keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
-                            numColumns={3}
-                        />
-                    )}
-                </Container>
-            </>
-        )
+        return <RenderCard {...this.props} title={'RECENTES'} list={this.state.listAnimes} />
     }
 }

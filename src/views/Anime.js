@@ -1,20 +1,6 @@
 import React from 'react'
 import {ScrollView} from 'react-native'
-import {
-    ContainerScroll,
-    ContainerTitle,
-    ContainerTop,
-    ImgBackground,
-    TitleText,
-    ContainerAge,
-    AgeText,
-    ContainerDescription,
-    DescriptionText,
-    ContainerCategory,
-    CategoryBox,
-    CategoryText,
-    ButtonFavorite,
-} from '../styles/views/Animes'
+import {ContainerScroll, ContainerTitle, ContainerTop, ImgBackground, TitleText, ContainerAge, AgeText, ContainerDescription, DescriptionText, ContainerCategory, CategoryBox, CategoryText, ButtonFavorite} from '../styles/views/Animes'
 import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import StorageService from '../services/StorageService'

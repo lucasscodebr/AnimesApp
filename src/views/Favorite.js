@@ -1,7 +1,5 @@
 import React from 'react'
-import {FlatList} from 'react-native'
-import {Header, MiniCard} from '../components'
-import {Container} from '../styles/views/Favorite'
+import {RenderCard} from '../components'
 import StorageService from '../services/StorageService'
 import {useIsFocused} from '@react-navigation/native'
 
@@ -33,21 +31,7 @@ class Favorites extends React.Component {
     }
 
     render() {
-        return (
-            <>
-                <Header {...this.props} title={'MINHA LISTA'} />
-                <Container>
-                    {this.state.listAnimes && (
-                        <FlatList
-                            data={this.state.listAnimes}
-                            keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
-                            numColumns={3}
-                        />
-                    )}
-                </Container>
-            </>
-        )
+        return <RenderCard {...this.props} title={'MINHA LISTA'} list={this.state.listAnimes} />
     }
 }
 

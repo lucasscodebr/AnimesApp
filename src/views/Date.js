@@ -2,7 +2,7 @@ import React from 'react'
 import {FlatList, Platform} from 'react-native'
 import {Container} from '../styles/views/Date'
 import RNPickerSelect from 'react-native-picker-select'
-import {Header, MiniCard} from '../components'
+import {Header, MiniCard, RenderCard} from '../components'
 import AxiosServices from '../services/AxiosService'
 
 export default class AnimeYear extends React.Component {
@@ -48,7 +48,9 @@ export default class AnimeYear extends React.Component {
 
     handleOnPickerChange(year) {
         this.setState({pageNumber: 0, animeAge: year})
-        if (Platform.OS === 'android') this.handleGetByYear(true)
+        if (Platform.OS === 'android') {
+            this.handleGetByYear(true)
+        }
     }
 
     componentDidMount() {
@@ -57,37 +59,23 @@ export default class AnimeYear extends React.Component {
 
     render() {
         return (
-            <>
-                <Header {...this.props}>
-                    <RNPickerSelect
-                        useNativeAndroidPickerStyle={false}
-                        doneText={'OK'}
-                        style={this.style}
-                        placeholder={{
-                            label: 'Escolha um ano ...',
-                            value: 2020,
-                            color: '#000',
-                        }}
-                        onValueChange={(value) => this.handleOnPickerChange(value)}
-                        items={this.ageList}
-                        onClose={() => {
-                            this.handleGetByYear(true)
-                        }}
-                    />
-                </Header>
-                <Container>
-                    {this.state.listAnimes && (
-                        <FlatList
-                            data={this.state.listAnimes}
-                            keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
-                            numColumns={3}
-                            onEndReached={() => this.handleGetByYear()}
-                            onEndReachedThreshold={0.5}
-                        />
-                    )}
-                </Container>
-            </>
+            <RenderCard {...this.props} list={this.state.listAnimes} method={() => this.handleGetByYear()}>
+                <RNPickerSelect
+                    useNativeAndroidPickerStyle={false}
+                    doneText={'OK'}
+                    style={this.style}
+                    placeholder={{
+                        label: 'Escolha um ano ...',
+                        value: 2020,
+                        color: '#000',
+                    }}
+                    onValueChange={(value) => this.handleOnPickerChange(value)}
+                    items={this.ageList}
+                    onClose={() => {
+                        this.handleGetByYear(true)
+                    }}
+                />
+            </RenderCard>
         )
     }
 }

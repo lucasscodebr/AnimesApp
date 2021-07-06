@@ -1,7 +1,6 @@
 import React from 'react'
-import {FlatList, Platform} from 'react-native'
-import {Header, MiniCard} from '../components'
-import {Container} from '../styles/views/Category'
+import {Platform} from 'react-native'
+import {RenderCard} from '../components'
 import RNPickerSelect from 'react-native-picker-select'
 import AxiosServices from '../services/AxiosService'
 
@@ -60,39 +59,21 @@ export default class Category extends React.Component {
 
     render() {
         return (
-            <>
-                {!this.state.categories.length > 0 ? (
-                    <Header {...this.props} title={'CATEGORIA'} />
-                ) : (
-                    <Header {...this.props}>
-                        <RNPickerSelect
-                            useNativeAndroidPickerStyle={false}
-                            doneText={'OK'}
-                            style={this.style}
-                            placeholder={{
-                                label: 'Escolha a Categoria ...',
-                                value: 'Romance',
-                                color: '#000',
-                            }}
-                            onValueChange={(value) => this.handlePickerChange(value)}
-                            items={this.state.categories}
-                            onClose={() => this.handleGetAnimesByCategory()}
-                        />
-                    </Header>
-                )}
-                <Container>
-                    {this.state.list && (
-                        <FlatList
-                            data={this.state.list}
-                            keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
-                            numColumns={3}
-                            onEndReached={() => this.handleGetAnimesByCategory()}
-                            onEndReachedThreshold={0.5}
-                        />
-                    )}
-                </Container>
-            </>
+            <RenderCard {...this.props} list={this.state.list} method={() => this.handleGetAnimesByCategory()}>
+                <RNPickerSelect
+                    useNativeAndroidPickerStyle={false}
+                    doneText={'OK'}
+                    style={this.style}
+                    placeholder={{
+                        label: 'Escolha a Categoria ...',
+                        value: 'Romance',
+                        color: '#000',
+                    }}
+                    onValueChange={(value) => this.handlePickerChange(value)}
+                    items={this.state.categories}
+                    onClose={() => this.handleGetAnimesByCategory()}
+                />
+            </RenderCard>
         )
     }
 }

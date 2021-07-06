@@ -1,7 +1,5 @@
 import React from 'react'
-import {FlatList} from 'react-native'
-import {Container} from '../styles/views/Popular'
-import {Header, MiniCard} from '../components'
+import {RenderCard} from '../components'
 import AxiosServices from '../services/AxiosService'
 
 class Popular extends React.Component {
@@ -33,23 +31,7 @@ class Popular extends React.Component {
     }
 
     render() {
-        return (
-            <>
-                <Header {...this.props} title={'POPULAR'}></Header>
-                <Container>
-                    {this.state.listAnimes && (
-                        <FlatList
-                            data={this.state.listAnimes}
-                            keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
-                            numColumns={3}
-                            onEndReached={() => this.handleGetPopularAnimes()}
-                            onEndReachedThreshold={0.5}
-                        />
-                    )}
-                </Container>
-            </>
-        )
+        return <RenderCard {...this.props} title={'POPULAR'} list={this.state.listAnimes} method={() => this.handleGetPopularAnimes()} />
     }
 }
 

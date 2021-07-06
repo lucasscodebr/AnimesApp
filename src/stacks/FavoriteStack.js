@@ -1,8 +1,8 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
-import Favorites from './index'
-import Anime from '../anime'
-import Video from '../../componets/video'
+import Favorites from '../views/FavoriteView'
+import Anime from '../views/anime'
+import Video from '../componets/video'
 
 const Stack = createStackNavigator()
 

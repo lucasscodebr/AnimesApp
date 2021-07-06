@@ -1,9 +1,8 @@
 import React from 'react'
 import {createDrawerNavigator} from '@react-navigation/drawer'
-import {Search, Recent, Popular} from '../../stacks/'
+import {Search, Recent, Popular, Favorite} from '../../stacks/'
 import ForAge from '../age/stack'
 import Category from '../category/stack'
-import Favorites from '../favorites/stack'
 
 const Drawer = createDrawerNavigator()
 
@@ -15,7 +14,7 @@ const DrawerComponent = (props) => {
             <Drawer.Screen name={'POPULAR'} component={Popular} />
             <Drawer.Screen name={'CATEGORIA'} component={Category} />
             <Drawer.Screen name={'ANO DE LANCAMENTO'} component={ForAge} />
-            <Drawer.Screen name={'MINHA LISTA'} component={Favorites} />
+            <Drawer.Screen name={'MINHA LISTA'} component={Favorite} />
         </Drawer.Navigator>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import ViewMain from './src/views/index.js'
+import {Main} from './src/views'
 
 const App = () => {
     // LogBox.ignoreAllLogs()
@@ -8,7 +8,7 @@ const App = () => {
     //             'RCTBridge required dispatch_sync to load RCTDevLoadingView'
     //           ])
 
-    return <ViewMain />
+    return <Main />
 }
 
 export default App

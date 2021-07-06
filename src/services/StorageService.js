@@ -21,4 +21,21 @@ export default class StorageService {
     saveFavorite(json) {
         AsyncStorage.setItem(this.key, JSON.stringify(json))
     }
+
+    async saveOneFavorite(item) {
+        const result = await this.getFavorite()
+        result.push(item)
+        this.saveFavorite(result)
+    }
+
+    async deleteFavorite(id) {
+        const result = await this.getFavorite()
+        const removed = result.filter((obj) => obj.id !== id)
+        await this.saveFavorite(removed)
+    }
+
+    async findFavoriteByAnimeId(id) {
+        const result = await this.getFavorite()
+        return result.find((obj) => obj.id === id)
+    }
 }

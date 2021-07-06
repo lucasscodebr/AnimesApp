@@ -67,15 +67,12 @@ export default class Anime extends React.Component {
 
     async handleClickSaveFavorite() {
         try {
-            const json = await this.storage.getFavorite()
-            const isInDatabase = json.find((obj) => obj.id === this.state.anime.id)
-            if (isInDatabase) {
-                const removed = json.filter((obj) => obj.id !== this.state.anime.id)
-                this.storage.saveFavorite(removed)
+            const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
+            if (exists) {
+                this.storage.deleteFavorite(this.state.anime.id)
                 this.setState({colorButtonFavorite: '#fafafa'})
             } else {
-                json.push(this.state.anime)
-                this.storage.saveFavorite(json)
+                this.storage.saveOneFavorite(this.state.anime)
                 this.setState({colorButtonFavorite: '#ff0'})
             }
         } catch (error) {

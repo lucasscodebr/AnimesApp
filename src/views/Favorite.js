@@ -3,8 +3,9 @@ import {FlatList} from 'react-native'
 import {Header, MiniCard} from '../components'
 import {Container} from '../styles/views/Favorite'
 import StorageService from '../services/StorageService'
+import {useIsFocused} from '@react-navigation/native'
 
-export default class Favorites extends React.Component {
+class Favorites extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -22,6 +23,11 @@ export default class Favorites extends React.Component {
         }
     }
 
+    componentDidUpdate(prev) {
+        if (this.props.isFocused !== prev.isFocused) {
+            this.handleGetAnimesOnStorage()
+        }
+    }
     componentDidMount() {
         this.handleGetAnimesOnStorage()
     }
@@ -45,4 +51,9 @@ export default class Favorites extends React.Component {
             </>
         )
     }
+}
+
+export default (props) => {
+    const isFocused = useIsFocused()
+    return <Favorites {...props} isFocused={isFocused} />
 }

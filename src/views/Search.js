@@ -1,40 +1,33 @@
 import React from 'react'
+import {StyleSheet} from 'react-native'
 import {View, FlatList} from 'react-native'
-import server from '../services/api'
 import {Card, Search} from '../components'
-import url from '../config/urls'
-import err from '../class/Errors'
+import AxiosService from '../services/AxiosService'
 
-class Main extends React.Component {
+export default class SearchView extends React.Component {
     constructor(props) {
         super(props)
-        this.startState = {
-            listAnimes: [],
-            pageNumber: 0,
-            searchTitle: '',
-        }
-        this.state = {
-            ...this.startState,
-        }
+        this.style = StyleSheet.create({back: {height: '100%', backgroundColor: 'rgb(25, 25, 25)'}})
+        this.start = {list: [], page: 0, title: ''}
+        this.state = {...this.start}
+        this.http = AxiosService.getInstance()
     }
 
     async handleGetSearchAnimesList() {
         try {
-            const response = await server.get(
-                url.ANIMES_URL +
-                    `find/?name=${this.state.searchTitle}&page=${this.state.pageNumber}`,
-            )
+            const response = await this.http.findAllAnimes(this.state.page)
             this.setState({
-                listAnimes: [...this.state.listAnimes, ...response.data],
+                list: [...this.state.list, ...response],
             })
-            this.setState({pageNumber: this.state.pageNumber + 50})
+            this.setState({page: this.state.page + 50})
         } catch (error) {
-            err.sendPostErrorToApi('handleGetSearchAnimesList', error)
+            await this.http.saveError('handleGetSearchAnimesList', error)
         }
     }
 
     handleSearch(text) {
-        this.setState({...this.startState, searchTitle: text})
+        console.log(text)
+        this.setState({...this.start, title: text})
     }
 
     componentDidMount() {
@@ -43,33 +36,16 @@ class Main extends React.Component {
 
     render() {
         return (
-            <View style={{height: '100%', backgroundColor: 'rgb(25, 25, 25)'}}>
-                <Search
-                    {...this.props}
-                    value={this.state.searchTitle}
-                    onChangeText={(txt) => this.handleSearch(txt)}
-                    onPress={() => {
-                        this.handleGetSearchAnimesList()
-                    }}
-                />
-                {this.state.listAnimes && (
+            <View style={this.style.back}>
+                <Search {...this.props} value={this.state.title} onChangeText={this.handleSearch.bind(this)} onPress={this.handleGetSearchAnimesList.bind(this)} />
+                {this.state.list && (
                     <FlatList
-                        data={this.state.listAnimes}
+                        data={this.state.list}
                         keyExtractor={(item) => item.id}
                         renderItem={({item: anime}) => {
-                            return (
-                                <Card
-                                    anime={anime}
-                                    onPress={() =>
-                                        this.props.navigation.navigate(
-                                            'Anime',
-                                            {anime},
-                                        )
-                                    }
-                                />
-                            )
+                            return <Card anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
                         }}
-                        onEndReached={() => this.handleGetSearchAnimesList()}
+                        onEndReached={this.handleGetSearchAnimesList.bind(this)}
                         onEndReachedThreshold={0.5}
                     />
                 )}
@@ -77,5 +53,3 @@ class Main extends React.Component {
         )
     }
 }
-
-export default Main

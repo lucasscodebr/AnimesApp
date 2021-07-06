@@ -22,7 +22,7 @@ export const Line = styled.View`
 `
 export const Line2 = styled.View`
     padding-top: 3px;
-    borderbottomwidth: 1px;
+    border-bottom-width: 1px;
     border-bottom-color: #e6e6e6;
     height: 30px;
 `

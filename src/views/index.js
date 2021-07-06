@@ -1,10 +1,10 @@
-import MainView from './MainView'
-import RecentView from './RecentView'
-import PopularView from './PopularView'
-import SearchView from './SearchView'
-import CategoryView from './CategoryView'
-import AnimeView from './AnimeView'
-import DateView from './DateView'
+import MainView from './Main'
+import RecentView from './Recent'
+import PopularView from './Popular'
+import SearchView from './Search'
+import CategoryView from './Category'
+import AnimeView from './Anime'
+import DateView from './Date'
 
 export const Main = MainView
 export const Recent = RecentView

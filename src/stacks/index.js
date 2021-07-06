@@ -1,9 +1,9 @@
-import SearchStack from './SearchStack'
-import RecentStack from './RecentStack'
-import PopularStack from './PopularStack'
-import FavoriteStack from './FavoriteStack'
-import CategoryStack from './CategoryStack'
-import DateStack from './DateStack'
+import SearchStack from './Search'
+import RecentStack from './Recent'
+import PopularStack from './Popular'
+import FavoriteStack from './Favorite'
+import CategoryStack from './Category'
+import DateStack from './Date'
 
 export const Search = SearchStack
 export const Recent = RecentStack

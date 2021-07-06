@@ -23,7 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import url from '../config/urls'
 import err from '../class/Errors'
 
-class Anime extends React.Component {
+export default class Anime extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -163,5 +163,3 @@ class Anime extends React.Component {
         )
     }
 }
-
-export default Anime

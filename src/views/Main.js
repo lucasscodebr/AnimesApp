@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, SafeAreaView, StatusBar, StyleSheet} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
-import Drawer from './routes/drawer.js'
+import Drawer from '../Router'
 
 export default class Main extends React.Component {
     constructor(props) {

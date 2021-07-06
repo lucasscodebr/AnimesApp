@@ -2,9 +2,9 @@ import React from 'react'
 import {FlatList} from 'react-native'
 import {Header} from '../components'
 import {Container} from '../styles/views/Favorite'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import MiniCard from '../componets/miniCard'
 import err from '../class/Errors'
+import StorageService from '../services/StorageService'
 
 export default class Favorites extends React.Component {
     constructor(props) {
@@ -16,16 +16,11 @@ export default class Favorites extends React.Component {
 
     async handleGetAnimesOnStorage() {
         try {
-            const jsonResponse = await AsyncStorage.getItem('@favorite')
-            const response =
-                jsonResponse == null ? [] : JSON.parse(jsonResponse)
+            const jsonResponse = await StorageService.getInstance().getFavorite()
+            const response = jsonResponse == null ? [] : JSON.parse(jsonResponse)
             this.setState({listAnimes: response})
         } catch (error) {
-            err.sendPostErrorToApi(
-                'handleGetAnimesOnStorage',
-                error,
-                'GET STORAGE ERROR',
-            )
+            err.sendPostErrorToApi('handleGetAnimesOnStorage', error, 'GET STORAGE ERROR')
         }
     }
 
@@ -43,17 +38,7 @@ export default class Favorites extends React.Component {
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) => item + index}
                             renderItem={({item: anime}) => {
-                                return (
-                                    <MiniCard
-                                        anime={anime}
-                                        onPress={() =>
-                                            this.props.navigation.navigate(
-                                                'Anime',
-                                                {anime},
-                                            )
-                                        }
-                                    />
-                                )
+                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
                             }}
                             numColumns={3}
                         />

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, ScrollView} from 'react-native'
+import {ScrollView} from 'react-native'
 import {
     ContainerScroll,
     ContainerTitle,
@@ -15,12 +15,11 @@ import {
     CategoryText,
     ButtonFavorite,
 } from '../styles/views/Animes'
-import server from '../services/api'
 import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import url from '../config/urls'
-import err from '../class/Errors'
+import StorageService from '../services/StorageService'
+import AxiosService from '../services/AxiosService'
 
 export default class Anime extends React.Component {
     constructor(props) {
@@ -30,75 +29,57 @@ export default class Anime extends React.Component {
             listEp: [],
             colorButtonFavorite: '#fafafa',
         }
+        this.storage = StorageService.getInstance()
+        this.http = AxiosService.getInstance()
     }
 
     async handleGetEpisodesList() {
         try {
-            const response = await server.get(
-                url.EPISODES_URL + this.props.route.params.anime.id + '/list',
-            )
-            this.setState({...this.state, listEp: response.data})
+            const response = await this.http.findEpisodesByAnimeId(this.state.anime.id)
+            this.setState({...this.state, listEp: response})
         } catch (error) {
-            err.sendPostErrorToApi('handleGetEpisodesList', error)
+            this.http.saveError('handleGetEpisodesList', error)
         }
     }
 
     async handleIsFavorite() {
         try {
-            const dbString = await AsyncStorage.getItem('@favorite')
-            const json = dbString == null ? [] : JSON.parse(dbString)
-            const isFavorite = json.find((obj) => obj.id == this.state.anime.id)
+            const json = await this.storage.getFavorite()
+            const isFavorite = json.find((obj) => obj.id === this.state.anime.id)
             if (isFavorite) {
                 this.setState({...this.state, colorButtonFavorite: '#ff0'})
             }
         } catch (error) {
-            err.sendPostErrorToApi('handleIsFavorite', error)
+            this.http.saveError('handleIsFavorite', error)
         }
     }
 
     async handleClickPlayer(episodio) {
-        if (episodio.videos.length != 0) {
+        if (episodio.videos.length !== 0) {
             this.props.navigation.navigate('Video', {
                 arrayVideos: episodio.videos,
                 episode: {id: episodio.id, title: episodio.title},
             })
         } else {
-            err.sendPostErrorToApi(
-                'handleClickPlayer',
-                'Not Found Any Video in the epsode : ' + episodio.id,
-            )
-            Alert.alert('Not Found Any Video, The Admin was contacted!')
+            this.http.saveError('handleClickPlayer', 'Not Found Any Video in the episode : ' + episodio.id)
         }
     }
 
     async handleClickSaveFavorite() {
         try {
-            const storageResult = await AsyncStorage.getItem('@favorite')
-            const jsonArray =
-                storageResult == null ? [] : JSON.parse(storageResult)
-            const isInDatabase = jsonArray.find(
-                (obj) => obj.id == this.state.anime.id,
-            )
+            const json = await this.storage.getFavorite()
+            const isInDatabase = json.find((obj) => obj.id === this.state.anime.id)
             if (isInDatabase) {
-                const listWithRemove = jsonArray.filter(
-                    (obj) => obj.id != this.state.anime.id,
-                )
-                await AsyncStorage.setItem(
-                    '@favorite',
-                    JSON.stringify(listWithRemove),
-                )
-                this.setState({...this.state, colorButtonFavorite: '#fafafa'})
+                const removed = json.filter((obj) => obj.id !== this.state.anime.id)
+                this.storage.saveFavorite(removed)
+                this.setState({colorButtonFavorite: '#fafafa'})
             } else {
-                const saveAnime = {...this.state.anime}
-                jsonArray.push(saveAnime)
-                await AsyncStorage.setItem(
-                    '@favorite',
-                    JSON.stringify(jsonArray),
-                )
-                this.setState({...this.state, colorButtonFavorite: '#ff0'})
+                json.push(this.state.anime)
+                this.storage.saveFavorite(json)
+                this.setState({colorButtonFavorite: '#ff0'})
             }
         } catch (error) {
-            err.sendPostErrorToApi('handleClickSaveFavorite', error)
+            this.http.saveError('handleClickSaveFavorite', error)
         }
     }
 
@@ -113,17 +94,10 @@ export default class Anime extends React.Component {
             this.state.anime != null && (
                 <ContainerScroll>
                     <ContainerTitle>
-                        <ArrowBack
-                            onPress={() => this.props.navigation.goBack()}
-                        />
+                        <ArrowBack onPress={() => this.props.navigation.goBack()} />
                         <TitleText>{this.state.anime.name}</TitleText>
-                        <ButtonFavorite
-                            onPress={() => this.handleClickSaveFavorite()}>
-                            <Icon
-                                name={'folder-special'}
-                                size={30}
-                                color={this.state.colorButtonFavorite}
-                            />
+                        <ButtonFavorite onPress={() => this.handleClickSaveFavorite()}>
+                            <Icon name={'folder-special'} size={30} color={this.state.colorButtonFavorite} />
                         </ButtonFavorite>
                     </ContainerTitle>
                     <ContainerTop>
@@ -134,13 +108,10 @@ export default class Anime extends React.Component {
                         </ImgBackground>
                         <ContainerDescription>
                             <ScrollView>
-                                <DescriptionText>
-                                    {this.state.anime.sinopse}
-                                </DescriptionText>
+                                <DescriptionText>{this.state.anime.sinopse}</DescriptionText>
                             </ScrollView>
                         </ContainerDescription>
                     </ContainerTop>
-
                     <ContainerCategory>
                         {this.state.anime.category &&
                             this.state.anime.category.map((obj) => (
@@ -149,13 +120,8 @@ export default class Anime extends React.Component {
                                 </CategoryBox>
                             ))}
                     </ContainerCategory>
-                    {this.state.listEp.map((episodio) => (
-                        <Episode
-                            key={`${episodio.id}`}
-                            name={episodio.title}
-                            image={episodio.image}
-                            onPress={() => this.handleClickPlayer(episodio)}
-                        />
+                    {this.state.listEp.map((episode) => (
+                        <Episode key={episode.id} episode={episode} onPress={() => this.handleClickPlayer(episode)} />
                     ))}
                 </ContainerScroll>
             )

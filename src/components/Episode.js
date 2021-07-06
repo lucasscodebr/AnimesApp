@@ -1,21 +1,13 @@
 import React from 'react'
-import {
-    ContainerEpisode,
-    ContainerText,
-    DescriptionText,
-    ImgEpisode,
-} from '../styles/components/Episode'
+import {ContainerEpisode, ContainerText, DescriptionText, ImgEpisode} from '../styles/components/Episode'
 
-const Episode = ({name, image, onPress}) => {
+const Episode = (props) => {
     return (
-        <ContainerEpisode onPress={onPress}>
-            <ImgEpisode source={{uri: image}} />
+        <ContainerEpisode onPress={props.episode.onPress}>
+            <ImgEpisode source={{uri: props.episode.thumbnail}} />
             <ContainerText>
-                {name.split(' - ', 2).map((txt) => (
-                    <DescriptionText key={txt}>
-                        {`${txt.trim()}`}
-                    </DescriptionText>
-                ))}
+                <DescriptionText>Episode : {props.episode.number}</DescriptionText>
+                <DescriptionText>{props.episode.title.trim()}</DescriptionText>
             </ContainerText>
         </ContainerEpisode>
     )

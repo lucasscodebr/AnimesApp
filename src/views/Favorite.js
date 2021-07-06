@@ -1,9 +1,7 @@
 import React from 'react'
 import {FlatList} from 'react-native'
-import {Header} from '../components'
+import {Header, MiniCard} from '../components'
 import {Container} from '../styles/views/Favorite'
-import MiniCard from '../componets/miniCard'
-import err from '../class/Errors'
 import StorageService from '../services/StorageService'
 
 export default class Favorites extends React.Component {
@@ -12,15 +10,15 @@ export default class Favorites extends React.Component {
         this.state = {
             listAnimes: [],
         }
+        this.storage = StorageService.getInstance()
     }
 
     async handleGetAnimesOnStorage() {
         try {
-            const jsonResponse = await StorageService.getInstance().getFavorite()
-            const response = jsonResponse == null ? [] : JSON.parse(jsonResponse)
-            this.setState({listAnimes: response})
+            const json = await this.storage.getFavorite()
+            this.setState({listAnimes: json})
         } catch (error) {
-            err.sendPostErrorToApi('handleGetAnimesOnStorage', error, 'GET STORAGE ERROR')
+            this.storage.saveError('handleGetAnimesOnStorage', error, 'GET STORAGE ERROR')
         }
     }
 

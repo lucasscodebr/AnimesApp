@@ -22,6 +22,15 @@ export default class AxiosService {
         }
     }
 
+    async findEpisodesByAnimeId(id) {
+        try {
+            const response = await this.http.get('episodes/' + id + '/list')
+            return response.data
+        } catch (error) {
+            return []
+        }
+    }
+
     async saveError(methodName, errorMessage, title = null) {
         if (typeof errorMessage === 'object') {
             errorMessage = errorMessage.toString()

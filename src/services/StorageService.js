@@ -14,6 +14,11 @@ export default class StorageService {
     }
 
     async getFavorite() {
-        return await AsyncStorage.getItem(this.key)
+        const result = await AsyncStorage.getItem(this.key)
+        return !result ? [] : JSON.parse(result)
+    }
+
+    saveFavorite(json) {
+        AsyncStorage.setItem(this.key, JSON.stringify(json))
     }
 }

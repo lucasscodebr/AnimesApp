@@ -7,12 +7,12 @@ export const ContainerScroll = styled.ScrollView`
 `
 export const ContainerTitle = styled.View`
     height: 65px;
-    alignitems: center;
-    backgroundcolor: rgb(35, 35, 35);
-    flexdirection: row;
+    align-items: center;
+    background-color: rgb(35, 35, 35);
+    flex-direction: row;
 `
 export const TitleText = styled.Text`
-    fontsize: 18px;
+    font-size: 18px;
     color: rgb(0, 255, 48);
     padding: 10px;
     flex: 1;
@@ -24,26 +24,26 @@ export const ButtonFavorite = styled.TouchableOpacity`
 export const ContainerTop = styled.View`
     width: 100%;
     height: 225px;
-    flexdirection: row;
-    backgroundcolor: rgb(43, 43, 43);
+    flex-direction: row;
+    background-color: rgb(43, 43, 43);
 `
 export const ImgBackground = styled.ImageBackground`
     width: 165px;
     height: 225px;
-    alignitems: flex-end;
-    justifycontent: flex-end;
+    align-items: flex-end;
+    justify-content: flex-end;
 `
 export const ContainerAge = styled.View`
     height: 25px;
-    alignitems: center;
-    backgroundcolor: rgb(27, 27, 27);
+    align-items: center;
+    background-color: rgb(27, 27, 27);
     padding: 5px;
 `
 export const AgeText = styled.Text`
     flex: 1;
-    alignitems: center;
+    align-items: center;
     color: #fff;
-    fontweight: bold;
+    font-weight: bold;
 `
 export const ContainerDescription = styled.View`
     flex: 1;
@@ -51,25 +51,25 @@ export const ContainerDescription = styled.View`
     padding: 10px;
 `
 export const DescriptionText = styled.Text`
-    fontsize: 17px;
+    font-size: 17px;
     color: #e6ffea;
-    textalign: justify;
+    text-align: justify;
 `
 export const ContainerCategory = styled.View`
     flex: 1;
     height: auto;
-    flexdirection: row;
-    justifycontent: center;
-    alignitems: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    backgroundcolor: rgb(51, 51, 51);
-    borderbottomwidth: 1px;
-    borderbottomcolor: #000;
+    background-color: rgb(51, 51, 51);
+    border-bottom-width: 1px;
+    border-bottom-color: #000;
 `
 export const CategoryBox = styled.View`
     padding: 4px;
 `
 export const CategoryText = styled.Text`
-    fontsize: 12px;
+    font-size: 12px;
     color: #1aff44;
 `

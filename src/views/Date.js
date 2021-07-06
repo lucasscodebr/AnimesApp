@@ -21,6 +21,12 @@ export default class AnimeYear extends React.Component {
                 value: `${year - index}`,
                 key: year - index,
             }))
+        this.style = {
+            width: '100%',
+            height: 35,
+            inputIOS: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
+            inputAndroid: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
+        }
         this.http = AxiosServices.getInstance()
     }
 
@@ -55,22 +61,8 @@ export default class AnimeYear extends React.Component {
                 <Header {...this.props}>
                     <RNPickerSelect
                         useNativeAndroidPickerStyle={false}
-                        style={{width: '100%', height: 35}}
                         doneText={'OK'}
-                        style={{
-                            inputIOS: {
-                                fontSize: 18,
-                                color: '#fafafa',
-                                padding: 3,
-                                paddingTop: 10,
-                            },
-                            inputAndroid: {
-                                fontSize: 18,
-                                color: '#fafafa',
-                                padding: 3,
-                                paddingTop: 10,
-                            },
-                        }}
+                        style={this.style}
                         placeholder={{
                             label: 'Escolha um ano ...',
                             value: 2020,
@@ -88,9 +80,7 @@ export default class AnimeYear extends React.Component {
                         <FlatList
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => {
-                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
-                            }}
+                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
                             numColumns={3}
                             onEndReached={() => this.handleGetByYear()}
                             onEndReachedThreshold={0.5}

@@ -10,11 +10,17 @@ export default class Category extends React.Component {
         super(props)
         this.state = {
             categories: [],
-            selectedCategory: 'romance',
+            selected: 'romance',
             page: 0,
             list: [],
         }
         this.http = AxiosServices.getInstance()
+        this.style = {
+            width: '100%',
+            height: 35,
+            inputIOS: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
+            inputAndroid: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
+        }
     }
 
     async handleGetAllCategory() {
@@ -30,7 +36,7 @@ export default class Category extends React.Component {
 
     async handleGetAnimesByCategory() {
         try {
-            const response = await this.http.findAllByCategory(this.state.selectedCategory, this.state.page)
+            const response = await this.http.findAllByCategory(this.state.selected, this.state.page)
             this.setState({
                 list: response,
                 page: this.state.page + 50,
@@ -41,7 +47,7 @@ export default class Category extends React.Component {
     }
 
     handlePickerChange(categoryName) {
-        this.setState({pageNumber: 0, selectedCategory: categoryName})
+        this.setState({pageNumber: 0, selected: categoryName})
         if (Platform.OS === 'android') {
             this.handleGetAnimesByCategory()
         }
@@ -56,27 +62,13 @@ export default class Category extends React.Component {
         return (
             <>
                 {!this.state.categories.length > 0 ? (
-                    <Header {...this.props} title={'CATEGORIA'}></Header>
+                    <Header {...this.props} title={'CATEGORIA'} />
                 ) : (
                     <Header {...this.props}>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            style={{width: '100%', height: 35}}
                             doneText={'OK'}
-                            style={{
-                                inputIOS: {
-                                    fontSize: 18,
-                                    color: '#fafafa',
-                                    padding: 3,
-                                    paddingTop: 10,
-                                },
-                                inputAndroid: {
-                                    fontSize: 18,
-                                    color: '#fafafa',
-                                    padding: 3,
-                                    paddingTop: 10,
-                                },
-                            }}
+                            style={this.style}
                             placeholder={{
                                 label: 'Escolha a Categoria ...',
                                 value: 'Romance',
@@ -93,9 +85,7 @@ export default class Category extends React.Component {
                         <FlatList
                             data={this.state.list}
                             keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => {
-                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
-                            }}
+                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
                             numColumns={3}
                             onEndReached={() => this.handleGetAnimesByCategory()}
                             onEndReachedThreshold={0.5}

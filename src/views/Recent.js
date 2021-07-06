@@ -39,9 +39,7 @@ export default class Recent extends React.Component {
                         <FlatList
                             data={this.state.listAnimes}
                             keyExtractor={(item, index) => item + index}
-                            renderItem={({item: anime}) => {
-                                return <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
-                            }}
+                            renderItem={({item: anime}) => <MiniCard anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
                             numColumns={3}
                         />
                     )}

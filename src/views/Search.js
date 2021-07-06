@@ -42,9 +42,7 @@ export default class SearchView extends React.Component {
                     <FlatList
                         data={this.state.list}
                         keyExtractor={(item) => item.id}
-                        renderItem={({item: anime}) => {
-                            return <Card anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />
-                        }}
+                        renderItem={({item: anime}) => <Card anime={anime} onPress={() => this.props.navigation.navigate('Anime', {anime})} />}
                         onEndReached={this.handleGetSearchAnimesList.bind(this)}
                         onEndReachedThreshold={0.5}
                     />

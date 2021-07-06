@@ -1,6 +1,6 @@
 import React from 'react'
 import {FlatList} from 'react-native'
-import Header from '../componets/header'
+import {Header} from '../components'
 import {Container} from '../styles/views/Favorite'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import MiniCard from '../componets/miniCard'

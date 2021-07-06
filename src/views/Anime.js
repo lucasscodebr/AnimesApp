@@ -1,6 +1,5 @@
 import React from 'react'
 import {Alert, ScrollView} from 'react-native'
-import ButtonBack from '../componets/arrowBack'
 import {
     ContainerScroll,
     ContainerTitle,
@@ -17,7 +16,7 @@ import {
     ButtonFavorite,
 } from '../styles/views/Animes'
 import server from '../services/api'
-import Epsodio from '../componets/episodes/index'
+import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import url from '../config/urls'
@@ -114,7 +113,7 @@ export default class Anime extends React.Component {
             this.state.anime != null && (
                 <ContainerScroll>
                     <ContainerTitle>
-                        <ButtonBack
+                        <ArrowBack
                             onPress={() => this.props.navigation.goBack()}
                         />
                         <TitleText>{this.state.anime.name}</TitleText>
@@ -151,7 +150,7 @@ export default class Anime extends React.Component {
                             ))}
                     </ContainerCategory>
                     {this.state.listEp.map((episodio) => (
-                        <Epsodio
+                        <Episode
                             key={`${episodio.id}`}
                             name={episodio.title}
                             image={episodio.image}

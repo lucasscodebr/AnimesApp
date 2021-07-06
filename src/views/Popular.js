@@ -1,9 +1,8 @@
 import React from 'react'
 import {FlatList} from 'react-native'
 import {Container} from '../styles/views/Popular'
-import MiniCard from '../componets/miniCard'
 import server from '../services/api'
-import Header from '../componets/header'
+import {Header, MiniCard} from '../components'
 import url from '../config/urls'
 import err from '../class/Errors'
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import {View, FlatList} from 'react-native'
 import server from '../services/api'
-import Card from '../componets/card/index'
-import Search from '../componets/search/index'
+import {Card, Search} from '../components'
 import url from '../config/urls'
 import err from '../class/Errors'
 

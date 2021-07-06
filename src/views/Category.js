@@ -1,10 +1,9 @@
 import React from 'react'
 import {FlatList, Platform} from 'react-native'
-import Header from '../componets/header'
+import {Header, MiniCard} from '../components'
 import {Container} from '../styles/views/Category'
 import RNPickerSelect from 'react-native-picker-select'
 import server from '../services/api'
-import MiniCard from '../componets/miniCard'
 import err from '../class/Errors'
 import url from '../config/urls/index'
 

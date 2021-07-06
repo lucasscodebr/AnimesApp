@@ -1,7 +1,6 @@
 import React from 'react'
 import {createDrawerNavigator} from '@react-navigation/drawer'
-import {Search, Recent} from '../../stack/'
-import Popular from '../popular/stack'
+import {Search, Recent, Popular} from '../../stacks/'
 import ForAge from '../age/stack'
 import Category from '../category/stack'
 import Favorites from '../favorites/stack'

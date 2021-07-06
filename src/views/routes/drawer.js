@@ -1,8 +1,7 @@
 import React from 'react'
 import {createDrawerNavigator} from '@react-navigation/drawer'
-import {Search, Recent, Popular, Favorite} from '../../stacks/'
+import {Search, Recent, Popular, Favorite, Category} from '../../stacks/'
 import ForAge from '../age/stack'
-import Category from '../category/stack'
 
 const Drawer = createDrawerNavigator()
 

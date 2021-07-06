@@ -1,8 +1,0 @@
-import styled from 'styled-components'
-
-export const Container = styled.View`
-    width : 100%;
-    flex : 1;
-    alignItems : center;
-    background-color : #000;
-`

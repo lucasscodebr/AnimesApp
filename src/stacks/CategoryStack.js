@@ -1,8 +1,8 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
-import Anime from '../anime'
-import Video from '../../componets/video'
-import Caregory from '../category'
+import Anime from '../views/anime'
+import Video from '../componets/video'
+import Caregory from '../views/CategoryView'
 
 const Stack = createStackNavigator()
 

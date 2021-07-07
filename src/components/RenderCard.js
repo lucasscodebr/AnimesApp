@@ -1,7 +1,7 @@
 import React from 'react'
 import {Header, MiniCard} from './'
 import {FlatList} from 'react-native'
-import {Container} from '../styles/views/Favorite'
+import {Container} from '../styles/components/RenderCard'
 
 export default class RenderCard extends React.Component {
     render() {

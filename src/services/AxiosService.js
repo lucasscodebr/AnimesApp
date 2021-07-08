@@ -48,12 +48,7 @@ export default class AxiosService {
     }
 
     async findAnimesRecents() {
-        try {
-            const response = await this.searchAnimes()
-            return response.data
-        } catch (error) {
-            return []
-        }
+        return await this.searchAnimes()
     }
 
     async findAllAnimes(page) {

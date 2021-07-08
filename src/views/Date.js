@@ -8,11 +8,7 @@ export default class AnimeYear extends React.Component {
     constructor(props) {
         super(props)
         this.yearNow = new Date().getFullYear()
-        this.state = {
-            list: [],
-            page: 0,
-            animeAge: this.yearNow,
-        }
+        this.state = {list: [], page: 0, animeAge: this.yearNow}
         this.animeAgesList = Array(this.yearNow + 1 - 1980)
             .fill(this.yearNow)
             .map((year, index) => ({label: '' + (year - index), value: '' + (year - index), key: year - index}))

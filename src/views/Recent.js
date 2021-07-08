@@ -5,16 +5,15 @@ import AxiosServices from '../services/AxiosService'
 export default class Recent extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            listAnimes: [],
-        }
+        this.state = {list: []}
         this.http = AxiosServices.getInstance()
     }
 
     async handleGetRecentAnimes() {
         try {
-            const result = this.http.findAnimesRecents()
-            this.setState({listAnimes: result})
+            const result = await this.http.findAnimesRecents()
+            console.log('aqiui', result)
+            this.setState({list: result})
         } catch (error) {
             this.http.saveError('handleGetRecentAnimes', error)
         }
@@ -25,6 +24,6 @@ export default class Recent extends React.Component {
     }
 
     render() {
-        return <RenderCard {...this.props} title={'RECENTES'} list={this.state.listAnimes} />
+        return <RenderCard {...this.props} title={'RECENTES'} list={this.state.list} />
     }
 }

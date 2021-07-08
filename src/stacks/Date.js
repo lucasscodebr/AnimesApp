@@ -6,9 +6,7 @@ import {Video} from '../components'
 const Stack = createStackNavigator()
 
 export default (props) => (
-    <Stack.Navigator
-        initialRouteName={'ForAge'}
-        screenOptions={{headerShown: false}}>
+    <Stack.Navigator initialRouteName={'ForAge'} screenOptions={{headerShown: false}}>
         <Stack.Screen name={'ForAge'} component={Date} />
         <Stack.Screen name={'Anime'} component={Anime} />
         <Stack.Screen name={'Video'} component={Video} />

@@ -12,6 +12,7 @@ export default class Video extends React.Component {
     }
 
     render() {
+        console.log(this.state.array[0].url)
         return (
             <ContainerVideo>
                 <VideoPlayer source={{uri: this.state.array[0].url}} onBack={() => this.props.navigation.goBack()} onError={() => console.log('error')} />

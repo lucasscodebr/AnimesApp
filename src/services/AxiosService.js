@@ -25,6 +25,7 @@ export default class AxiosService {
             const response = await this.http.get('animes/find/?name=' + name + '&category=' + category + '&age=' + age + '&page=' + page + '&size=' + size + '&orderBy=' + orderBy)
             return response.data
         } catch (error) {
+            console.log(error)
             return []
         }
     }

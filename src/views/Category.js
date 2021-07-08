@@ -7,12 +7,7 @@ import AxiosServices from '../services/AxiosService'
 export default class Category extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            categories: [],
-            selected: 'romance',
-            page: 0,
-            list: [],
-        }
+        this.state = {categories: [], selected: 'Romance', page: 0, list: []}
         this.http = AxiosServices.getInstance()
         this.style = {
             width: '100%',
@@ -25,9 +20,7 @@ export default class Category extends React.Component {
     async handleGetAllCategory() {
         try {
             const result = await this.http.findAllCategory()
-            this.setState({
-                categories: result.map((obj) => ({key: obj.id, label: obj.name, value: obj.slugify})),
-            })
+            this.setState({categories: result.map((obj) => ({key: obj.id, label: obj.name, value: obj.name}))})
         } catch (error) {
             this.http.saveError('handleGetAllCategory', error)
         }
@@ -36,17 +29,14 @@ export default class Category extends React.Component {
     async handleGetAnimesByCategory() {
         try {
             const response = await this.http.findAllByCategory(this.state.selected, this.state.page)
-            this.setState({
-                list: response,
-                page: this.state.page + 50,
-            })
+            this.setState({list: [...this.state.list, ...response], page: this.state.page + 1})
         } catch (error) {
             this.http.saveError('handleGetAnimesByCategory', error)
         }
     }
 
     handlePickerChange(categoryName) {
-        this.setState({pageNumber: 0, selected: categoryName})
+        this.setState({page: 0, selected: categoryName, list: []})
         if (Platform.OS === 'android') {
             this.handleGetAnimesByCategory()
         }

@@ -7,7 +7,7 @@ import AxiosService from '../services/AxiosService'
 export default class SearchView extends React.Component {
     constructor(props) {
         super(props)
-        this.style = StyleSheet.create({back: {height: '100%', backgroundColor: 'rgb(25, 25, 25)'}})
+        this.style = StyleSheet.create({back: {height: '100%', backgroundColor: 'rgb(15, 15, 15)'}})
         this.start = {list: [], page: 0, title: ''}
         this.state = {...this.start}
         this.http = AxiosService.getInstance()

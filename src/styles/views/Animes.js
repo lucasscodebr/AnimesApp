@@ -3,12 +3,12 @@ import styled from 'styled-components/native'
 export const ContainerScroll = styled.ScrollView`
     width: 100%;
     height: 100%;
-    background-color: #222;
+    background-color: #111;
 `
 export const ContainerTitle = styled.View`
     height: 65px;
     align-items: center;
-    background-color: rgb(35, 35, 35);
+    background-color: rgb(20, 20, 20);
     flex-direction: row;
 `
 export const TitleText = styled.Text`
@@ -25,7 +25,7 @@ export const ContainerTop = styled.View`
     width: 100%;
     height: 225px;
     flex-direction: row;
-    background-color: rgb(43, 43, 43);
+    background-color: rgb(25, 25, 25);
 `
 export const ImgBackground = styled.ImageBackground`
     width: 165px;
@@ -72,4 +72,5 @@ export const CategoryBox = styled.View`
 export const CategoryText = styled.Text`
     font-size: 12px;
     color: #1aff44;
+    text-align: justify;
 `

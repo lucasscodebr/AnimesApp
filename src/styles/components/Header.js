@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 import {Platform} from 'react-native'
 
 export const Container = styled.View`
-    background-color: #1a1a1a;
+    background-color: #rgb(20, 20, 20);
     padding: 10px;
     width: 100%;
     height: auto;

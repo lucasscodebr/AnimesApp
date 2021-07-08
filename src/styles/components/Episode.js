@@ -6,7 +6,7 @@ export const ContainerEpisode = styled.TouchableOpacity`
     flex-direction: row;
     border-bottom-width: 1px;
     border-bottom-color: #000;
-    background-color: rgb(43, 43, 43);
+    background-color: rgb(33, 33, 33);
 `
 export const ImgEpisode = styled.Image`
     width: 120px;
@@ -15,7 +15,7 @@ export const ImgEpisode = styled.Image`
 `
 export const ContainerText = styled.View`
     justify-content: center;
-    width: auto;
+    width: 65%;
 `
 export const DescriptionText = styled.Text`
     color: #33ff58;

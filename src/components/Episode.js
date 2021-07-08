@@ -6,7 +6,7 @@ const Episode = (props) => {
         <ContainerEpisode onPress={props.onPress}>
             <ImgEpisode source={{uri: props.episode.thumbnail}} />
             <ContainerText>
-                <DescriptionText>Episode : {props.episode.number}</DescriptionText>
+                <DescriptionText>Episodio : {props.episode.number}</DescriptionText>
                 <DescriptionText>{props.episode.title.trim()}</DescriptionText>
             </ContainerText>
         </ContainerEpisode>

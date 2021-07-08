@@ -29,7 +29,7 @@ export default class AnimeYear extends React.Component {
         try {
             const response = await this.http.findAnimesByYear(this.state.animeAge, this.state.page)
             if (this.state.list.length === 0 || code === true) {
-                this.setState({listAnimes: response})
+                this.setState({list: response})
             } else {
                 this.setState({
                     list: [...this.state.list, ...response],

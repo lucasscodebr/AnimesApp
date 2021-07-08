@@ -8,7 +8,7 @@ export default class Main extends React.Component {
         super(props)
         this.style = StyleSheet.create({
             back: {
-                backgroundColor: '#1a1a1a',
+                backgroundColor: 'rgb(15, 15, 15)',
                 flex: 1,
             },
             area: {

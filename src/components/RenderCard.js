@@ -3,7 +3,7 @@ import {Header, MiniCard} from './'
 import {FlatList} from 'react-native'
 import {Container} from '../styles/components/RenderCard'
 
-export default class RenderCard extends React.Component {
+export class RenderCard extends React.Component {
     render() {
         return (
             <>

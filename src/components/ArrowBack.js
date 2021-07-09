@@ -2,7 +2,7 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {Container, ButtonBack} from '../styles/components/ArrowBack'
 
-const ArrowBack = (props) => {
+export const ArrowBack = (props) => {
     Icon.loadFont()
 
     return (
@@ -13,5 +13,3 @@ const ArrowBack = (props) => {
         </Container>
     )
 }
-
-export default ArrowBack

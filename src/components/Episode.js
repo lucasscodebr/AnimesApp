@@ -1,7 +1,7 @@
 import React from 'react'
 import {ContainerEpisode, ContainerText, DescriptionText, ImgEpisode} from '../styles/components/Episode'
 
-const Episode = (props) => {
+export const Episode = (props) => {
     return (
         <ContainerEpisode onPress={props.onPress}>
             <ImgEpisode source={{uri: props.episode.thumbnail}} />
@@ -12,5 +12,3 @@ const Episode = (props) => {
         </ContainerEpisode>
     )
 }
-
-export default Episode

@@ -2,7 +2,7 @@ import React from 'react'
 import {Container, Button, ContainerChildren, TitleText} from '../styles/components/Header'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-const Header = (props) => {
+export const Header = (props) => {
     Icon.loadFont()
 
     return (
@@ -14,5 +14,3 @@ const Header = (props) => {
         </Container>
     )
 }
-
-export default Header

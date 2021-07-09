@@ -2,7 +2,7 @@ import React from 'react'
 import {ContainerVideo} from '../styles/components/Videos'
 import VideoPlayer from 'react-native-video-controls'
 
-export default class Video extends React.Component {
+export class Video extends React.Component {
     constructor(props) {
         super(props)
         this.state = {array: props.route.params.array}

@@ -3,7 +3,7 @@ import {ContainerInput, Input, Button} from '../styles/components/Search'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {Header} from '../components'
 
-const Search = (props) => {
+export const Search = (props) => {
     Icon.loadFont()
 
     return (
@@ -26,5 +26,3 @@ const Search = (props) => {
         </Header>
     )
 }
-
-export default Search

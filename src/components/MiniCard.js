@@ -2,7 +2,7 @@ import React from 'react'
 import {Platform} from 'react-native'
 import {Container, ImageAnime, ContainerTitle, TitleText, ContainerEpsodio, EpsodioText} from '../styles/components/MiniCard'
 
-export default class MiniCard extends React.PureComponent {
+export class MiniCard extends React.PureComponent {
     constructor(props) {
         super(props)
     }

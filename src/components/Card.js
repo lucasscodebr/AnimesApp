@@ -1,7 +1,7 @@
 import React from 'react'
 import {CardContainer, InfoContainer, Line, Line2, Line3, ContainerAno, AnoText, ImageAnime, TitleText, CategoryText, DescritionText, ContainerLeft} from '../styles/components/Card'
 
-export default class Card extends React.PureComponent {
+export class Card extends React.PureComponent {
     constructor(props) {
         super(props)
     }

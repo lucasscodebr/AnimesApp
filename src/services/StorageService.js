@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default class StorageService {
+export class StorageService {
     constructor() {
         this.key = '@favorite'
         this.instance = null

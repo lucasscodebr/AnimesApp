@@ -2,7 +2,7 @@ import React from 'react'
 import {StyleSheet} from 'react-native'
 import {View, FlatList} from 'react-native'
 import {Card, Search} from '../components'
-import AxiosService from '../services/AxiosService'
+import {AxiosService} from '../services'
 
 export default class SearchView extends React.Component {
     constructor(props) {

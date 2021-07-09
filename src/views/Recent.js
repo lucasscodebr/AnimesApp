@@ -1,6 +1,6 @@
 import React from 'react'
 import {RenderCard} from '../components'
-import AxiosServices from '../services/AxiosService'
+import {AxiosServices} from '../services'
 
 export default class Recent extends React.Component {
     constructor(props) {

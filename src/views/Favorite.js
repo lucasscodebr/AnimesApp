@@ -1,6 +1,6 @@
 import React from 'react'
 import {RenderCard} from '../components'
-import StorageService from '../services/StorageService'
+import {StorageService} from '../services'
 import {useIsFocused} from '@react-navigation/native'
 
 class Favorites extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react'
 import {Platform} from 'react-native'
 import {RenderCard} from '../components'
 import RNPickerSelect from 'react-native-picker-select'
-import AxiosServices from '../services/AxiosService'
+import {AxiosServices} from '../services'
 
 export default class Category extends React.Component {
     constructor(props) {

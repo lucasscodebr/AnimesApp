@@ -3,8 +3,7 @@ import {ScrollView} from 'react-native'
 import {ContainerScroll, ContainerTitle, ContainerTop, ImgBackground, TitleText, ContainerAge, AgeText, ContainerDescription, DescriptionText, ContainerCategory, CategoryBox, CategoryText, ButtonFavorite} from '../styles/views/Animes'
 import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import StorageService from '../services/StorageService'
-import AxiosService from '../services/AxiosService'
+import {AxiosService, StorageService} from '../services'
 
 export default class Anime extends React.Component {
     constructor(props) {

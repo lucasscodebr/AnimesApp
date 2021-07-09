@@ -2,7 +2,7 @@ import React from 'react'
 import {Platform} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import {RenderCard} from '../components'
-import AxiosServices from '../services/AxiosService'
+import {AxiosServices} from '../services'
 
 export default class AnimeYear extends React.Component {
     constructor(props) {

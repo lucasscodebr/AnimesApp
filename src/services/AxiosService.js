@@ -1,6 +1,6 @@
 import Axios from '../config/AxiosConfig'
 
-export default class AxiosService {
+export class AxiosService {
     constructor() {
         this.http = Axios
         this.instance = null

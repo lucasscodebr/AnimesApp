@@ -5,7 +5,7 @@ import {Episode, ArrowBack} from '../components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {AxiosService, StorageService} from '../services'
 
-export default class Anime extends React.Component {
+export class Anime extends React.Component {
     constructor(props) {
         super(props)
         this.state = {anime: props.route.params.anime, episodes: [], color: '#fafafa'}

@@ -4,7 +4,7 @@ import {RenderCard} from '../components'
 import RNPickerSelect from 'react-native-picker-select'
 import {AxiosServices} from '../services'
 
-export default class Category extends React.Component {
+export class Category extends React.Component {
     constructor(props) {
         super(props)
         this.state = {categories: [], selected: 'Romance', page: 0, list: []}

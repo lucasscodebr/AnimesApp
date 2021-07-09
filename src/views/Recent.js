@@ -2,7 +2,7 @@ import React from 'react'
 import {RenderCard} from '../components'
 import {AxiosServices} from '../services'
 
-export default class Recent extends React.Component {
+export class Recent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {list: []}

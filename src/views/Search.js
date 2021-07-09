@@ -4,7 +4,7 @@ import {View, FlatList} from 'react-native'
 import {Card, Search} from '../components'
 import {AxiosService} from '../services'
 
-export default class SearchView extends React.Component {
+export class SearchView extends React.Component {
     constructor(props) {
         super(props)
         this.style = StyleSheet.create({back: {height: '100%', backgroundColor: 'rgb(15, 15, 15)'}})

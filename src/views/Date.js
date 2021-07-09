@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select'
 import {RenderCard} from '../components'
 import {AxiosServices} from '../services'
 
-export default class AnimeYear extends React.Component {
+export class AnimeYear extends React.Component {
     constructor(props) {
         super(props)
         this.yearNow = new Date().getFullYear()

@@ -31,7 +31,7 @@ class Favorites extends React.Component {
     }
 }
 
-export default (props) => {
+export const Favorite = (props) => {
     const isFocused = useIsFocused()
     return <Favorites {...props} isFocused={isFocused} />
 }

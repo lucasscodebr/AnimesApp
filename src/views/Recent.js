@@ -10,13 +10,8 @@ export default class Recent extends React.Component {
     }
 
     async handleGetRecentAnimes() {
-        try {
-            const result = await this.http.findAnimesRecents()
-            console.log('aqiui', result)
-            this.setState({list: result})
-        } catch (error) {
-            this.http.saveError('handleGetRecentAnimes', error)
-        }
+        const result = await this.http.findAnimesRecents()
+        this.setState({list: result})
     }
 
     componentDidMount() {

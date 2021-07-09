@@ -14,19 +14,11 @@ export default class SearchView extends React.Component {
     }
 
     async handleGetSearchAnimesList() {
-        try {
-            const response = await this.http.findAllAnimes(this.state.page)
-            this.setState({
-                list: [...this.state.list, ...response],
-            })
-            this.setState({page: this.state.page + 50})
-        } catch (error) {
-            await this.http.saveError('handleGetSearchAnimesList', error)
-        }
+        const response = await this.http.findAllAnimes(this.state.page)
+        this.setState({list: [...this.state.list, ...response], page: this.state.page + 1})
     }
 
     handleSearch(text) {
-        console.log(text)
         this.setState({...this.start, title: text})
     }
 

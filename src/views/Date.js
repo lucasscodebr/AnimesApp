@@ -22,19 +22,13 @@ export default class AnimeYear extends React.Component {
     }
 
     async handleGetByYear(code) {
-        try {
-            const response = await this.http.findAnimesByYear(this.state.animeAge, this.state.page)
-            if (this.state.list.length === 0 || code === true) {
-                this.setState({list: response})
-            } else {
-                this.setState({
-                    list: [...this.state.list, ...response],
-                })
-            }
-            this.setState({page: this.state.page + 1})
-        } catch (error) {
-            this.http.saveError('handleGetByYear', error)
+        const response = await this.http.findAnimesByYear(this.state.animeAge, this.state.page)
+        if (this.state.list.length === 0 || code === true) {
+            this.setState({list: response})
+        } else {
+            this.setState({list: [...this.state.list, ...response]})
         }
+        this.setState({page: this.state.page + 1})
     }
 
     handleOnPickerChange(year) {

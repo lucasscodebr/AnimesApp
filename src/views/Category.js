@@ -18,21 +18,13 @@ export default class Category extends React.Component {
     }
 
     async handleGetAllCategory() {
-        try {
-            const result = await this.http.findAllCategory()
-            this.setState({categories: result.map((obj) => ({key: obj.id, label: obj.name, value: obj.name}))})
-        } catch (error) {
-            this.http.saveError('handleGetAllCategory', error)
-        }
+        const result = await this.http.findAllCategory()
+        this.setState({categories: result.map((obj) => ({key: obj.id, label: obj.name, value: obj.name}))})
     }
 
     async handleGetAnimesByCategory() {
-        try {
-            const response = await this.http.findAllByCategory(this.state.selected, this.state.page)
-            this.setState({list: [...this.state.list, ...response], page: this.state.page + 1})
-        } catch (error) {
-            this.http.saveError('handleGetAnimesByCategory', error)
-        }
+        const response = await this.http.findAllByCategory(this.state.selected, this.state.page)
+        this.setState({list: [...this.state.list, ...response], page: this.state.page + 1})
     }
 
     handlePickerChange(categoryName) {
@@ -54,11 +46,7 @@ export default class Category extends React.Component {
                     useNativeAndroidPickerStyle={false}
                     doneText={'OK'}
                     style={this.style}
-                    placeholder={{
-                        label: 'Escolha a Categoria ...',
-                        value: 'Romance',
-                        color: '#000',
-                    }}
+                    placeholder={{label: 'Escolha a Categoria ...', value: 'Romance', color: '#000'}}
                     onValueChange={(value) => this.handlePickerChange(value)}
                     items={this.state.categories}
                     onClose={() => this.handleGetAnimesByCategory()}

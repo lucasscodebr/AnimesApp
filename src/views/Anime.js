@@ -15,13 +15,9 @@ export default class Anime extends React.Component {
     }
 
     async handleGetEpisodesList() {
-        try {
-            const response = await this.http.findEpisodesByAnimeId(this.state.anime.id)
-            const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
-            this.setState({episodes: response, color: exists ? '#ff0' : this.state.color})
-        } catch (error) {
-            this.http.saveError('handleGetEpisodesList', error)
-        }
+        const response = await this.http.findEpisodesByAnimeId(this.state.anime.id)
+        const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
+        this.setState({episodes: response, color: exists ? '#ff0' : this.state.color})
     }
 
     async handleClickPlayer(episodio) {
@@ -34,17 +30,13 @@ export default class Anime extends React.Component {
     }
 
     async handleClickSaveFavorite() {
-        try {
-            const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
-            if (exists) {
-                this.storage.deleteFavorite(this.state.anime.id)
-                this.setState({color: '#fafafa'})
-            } else {
-                this.storage.saveOneFavorite(this.state.anime)
-                this.setState({color: '#ff0'})
-            }
-        } catch (error) {
-            this.http.saveError('handleClickSaveFavorite', error)
+        const exists = await this.storage.findFavoriteByAnimeId(this.state.anime.id)
+        if (exists) {
+            this.storage.deleteFavorite(this.state.anime.id)
+            this.setState({color: '#fafafa'})
+        } else {
+            this.storage.saveOneFavorite(this.state.anime)
+            this.setState({color: '#ff0'})
         }
     }
 
@@ -55,7 +47,7 @@ export default class Anime extends React.Component {
     render() {
         Icon.loadFont()
         return (
-            this.state.anime != null && (
+            this.state.anime && (
                 <ContainerScroll>
                     <ContainerTitle>
                         <ArrowBack onPress={() => this.props.navigation.goBack()} />

@@ -13,12 +13,8 @@ class Favorites extends React.Component {
     }
 
     async handleGetAnimesOnStorage() {
-        try {
-            const json = await this.storage.getFavorite()
-            this.setState({listAnimes: json})
-        } catch (error) {
-            this.storage.saveError('handleGetAnimesOnStorage', error, 'GET STORAGE ERROR')
-        }
+        const json = await this.storage.getFavorite()
+        this.setState({listAnimes: json})
     }
 
     componentDidUpdate(prev) {

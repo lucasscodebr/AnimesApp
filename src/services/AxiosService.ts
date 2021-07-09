@@ -1,6 +1,9 @@
 import Axios from '../config/AxiosConfig'
 
 export class AxiosService {
+    private http: any
+    private instance: any
+
     constructor() {
         this.http = Axios
         this.instance = null
@@ -13,7 +16,7 @@ export class AxiosService {
         return this.instance
     }
 
-    async searchAnimes(name, category, age, page, size, orderBy) {
+    async searchAnimes(name: string, category: string, age: string, page: number, size: number, orderBy: string) {
         name = name || ''
         category = category || ''
         age = age || ''
@@ -30,7 +33,7 @@ export class AxiosService {
         }
     }
 
-    async findAllByCategory(category, page) {
+    async findAllByCategory(category: string, page: number) {
         return await this.searchAnimes(null, category, null, page)
     }
 
@@ -43,7 +46,7 @@ export class AxiosService {
         }
     }
 
-    async findAnimesByYear(age, page) {
+    async findAnimesByYear(age: string, page: number) {
         return await this.searchAnimes(null, null, age, page)
     }
 
@@ -51,7 +54,7 @@ export class AxiosService {
         return await this.searchAnimes()
     }
 
-    async findAllAnimes(page) {
+    async findAllAnimes(page: number) {
         try {
             const response = await this.http.get('animes?page=' + page)
             return response.data
@@ -60,7 +63,7 @@ export class AxiosService {
         }
     }
 
-    async findEpisodesByAnimeId(id) {
+    async findEpisodesByAnimeId(id: number) {
         try {
             const response = await this.http.get('episodes/' + id + '/list')
             return response.data
@@ -69,7 +72,7 @@ export class AxiosService {
         }
     }
 
-    async saveError(methodName, errorMessage, title = null) {
+    async saveError(methodName: string, errorMessage: any, title = null) {
         if (typeof errorMessage === 'object') {
             errorMessage = errorMessage.toString()
         }

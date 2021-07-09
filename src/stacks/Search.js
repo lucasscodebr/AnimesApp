@@ -5,7 +5,7 @@ import {Video} from '../components'
 
 const Stack = createStackNavigator()
 
-export default (props) => (
+export const Search = () => (
     <Stack.Navigator initialRouteName={'Pesquisa'} screenOptions={{headerShown: false}}>
         <Stack.Screen name={'Pesquisa'} component={SearchView} />
         <Stack.Screen name={'Anime'} component={Anime} />

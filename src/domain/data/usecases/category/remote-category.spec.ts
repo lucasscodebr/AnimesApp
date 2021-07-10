@@ -1,14 +1,5 @@
-import {HttpGetClient} from '../../protocols/http/http-get-client'
+import {HttpGetClientSpy} from '../../test/mock-http-client'
 import {RemoteCategory} from './remote-category'
-
-class HttpGetClientSpy implements HttpGetClient {
-    public url?: string
-
-    get(url: string): Promise<void> {
-        this.url = url
-        return Promise.resolve()
-    }
-}
 
 describe('RemoteCategory', () => {
     test('Should call HttpClient with correct URL', async () => {

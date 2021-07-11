@@ -9,6 +9,10 @@ export class RemoteCategory {
     }
 
     async handleGetCategoreis(): Promise<void> {
-        await this.httpGetClient.get(this.url)
+        return await this.httpGetClient.getAll(this.url)
+    }
+
+    async handleGetCategoryById(id: string) {
+        return await this.httpGetClient.getOne(this.url, id)
     }
 }

@@ -1,3 +1,4 @@
 export interface HttpGetClient {
-    get(url: string): Promise<void>
+    getAll(url: string): Promise<void>
+    getOne(url: string, id: string): Promise<void>
 }

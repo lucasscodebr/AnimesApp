@@ -11,6 +11,7 @@ const makeSut = (url: string = 'any_thing'): SutTypes => {
     const sut = new RemoteCategory(url, httpGetClientSpy)
     return {sut, httpGetClientSpy}
 }
+
 describe('RemoteCategory', () => {
     test('Should call HttpClient with correct URL', async () => {
         const url = 'any_thing'

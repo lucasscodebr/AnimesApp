@@ -1,2 +1,2 @@
-export * from './AxiosService'
-export * from './StorageService'
+export * from './axios-service'
+export * from './storage-service'

@@ -1,4 +1,4 @@
-import Axios from '../config/AxiosConfig'
+import Axios from '../config/axios-config'
 
 export class AxiosService {
     private http: any

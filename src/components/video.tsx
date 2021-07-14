@@ -1,5 +1,5 @@
 import React from 'react'
-import {ContainerVideo} from '../styles/components/Videos'
+import {ContainerVideo} from '../styles/components/videos'
 import VideoPlayer from 'react-native-video-controls'
 
 export class Video extends React.Component {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {ContainerInput, Input, Button} from '../styles/components/Search'
+import {ContainerInput, Input, Button} from '../styles/components/search'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {Header} from '../components'
 

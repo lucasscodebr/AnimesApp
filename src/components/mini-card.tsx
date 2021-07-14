@@ -1,6 +1,6 @@
 import React from 'react'
 import {Platform} from 'react-native'
-import {Container, ImageAnime, ContainerTitle, TitleText, ContainerEpsodio, EpsodioText} from '../styles/components/MiniCard'
+import {Container, ImageAnime, ContainerTitle, TitleText, ContainerEpsodio, EpsodioText} from '../styles/components/mini-card'
 
 export class MiniCard extends React.PureComponent {
     constructor(props) {

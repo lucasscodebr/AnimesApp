@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, Button, ContainerChildren, TitleText} from '../styles/components/Header'
+import {Container, Button, ContainerChildren, TitleText} from '../styles/components/header'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export const Header = (props) => {

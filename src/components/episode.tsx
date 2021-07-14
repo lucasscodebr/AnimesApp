@@ -1,5 +1,5 @@
 import React from 'react'
-import {ContainerEpisode, ContainerText, DescriptionText, ImgEpisode} from '../styles/components/Episode'
+import {ContainerEpisode, ContainerText, DescriptionText, ImgEpisode} from '../styles/components/episode'
 
 export const Episode = (props) => {
     return (

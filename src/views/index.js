@@ -1,7 +1,0 @@
-export * from './Main'
-export * from './Recent'
-export * from './Search'
-export * from './Category'
-export * from './Anime'
-export * from './Date'
-export * from './Favorite'

@@ -2,18 +2,13 @@ import Axios from '../config/AxiosConfig'
 
 export class AxiosService {
     private http: any
-    private instance: any
 
     constructor() {
         this.http = Axios
-        this.instance = null
     }
 
-    static getInstance() {
-        if (!this.instance) {
-            return new AxiosService()
-        }
-        return this.instance
+    static getInstance(): AxiosService {
+        return new AxiosService()
     }
 
     async searchAnimes(name: string, category: string, age: string, page: number, size: number, orderBy: string) {

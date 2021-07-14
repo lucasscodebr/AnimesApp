@@ -2,9 +2,9 @@ import React from 'react'
 import {Platform} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import {RenderCard} from '../components'
-import {AxiosServices} from '../services'
+import {AxiosService} from '../services'
 
-export class AnimeYear extends React.Component {
+export class DateView extends React.Component {
     constructor(props) {
         super(props)
         this.yearNow = new Date().getFullYear()
@@ -18,7 +18,7 @@ export class AnimeYear extends React.Component {
             inputIOS: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
             inputAndroid: {fontSize: 18, color: '#fafafa', padding: 3, paddingTop: 10},
         }
-        this.http = AxiosServices.getInstance()
+        this.http = AxiosService.getInstance()
     }
 
     async handleGetByYear(code) {

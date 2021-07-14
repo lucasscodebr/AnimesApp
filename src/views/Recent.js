@@ -1,12 +1,12 @@
 import React from 'react'
 import {RenderCard} from '../components'
-import {AxiosServices} from '../services'
+import {AxiosService} from '../services'
 
 export class Recent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {list: []}
-        this.http = AxiosServices.getInstance()
+        this.http = AxiosService.getInstance()
     }
 
     async handleGetRecentAnimes() {

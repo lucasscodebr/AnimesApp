@@ -2,13 +2,13 @@ import React from 'react'
 import {Platform} from 'react-native'
 import {RenderCard} from '../components'
 import RNPickerSelect from 'react-native-picker-select'
-import {AxiosServices} from '../services'
+import {AxiosService} from '../services'
 
 export class Category extends React.Component {
     constructor(props) {
         super(props)
         this.state = {categories: [], selected: 'Romance', page: 0, list: []}
-        this.http = AxiosServices.getInstance()
+        this.http = AxiosService.getInstance()
         this.style = {
             width: '100%',
             height: 35,

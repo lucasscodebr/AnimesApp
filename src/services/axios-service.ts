@@ -11,7 +11,7 @@ export class AxiosService {
         return new AxiosService()
     }
 
-    async searchAnimes(name: string, category: string, age: string, page: number, size: number, orderBy: string) {
+    async searchAnimes(name: string | null, category: string | null, age: string | null, page: number | null, size: number | null, orderBy: string | null) {
         name = name || ''
         category = category || ''
         age = age || ''
@@ -29,7 +29,7 @@ export class AxiosService {
     }
 
     async findAllByCategory(category: string, page: number) {
-        return await this.searchAnimes(null, category, null, page)
+        return await this.searchAnimes(null, category, null, page, null, null)
     }
 
     async findAllCategory() {
@@ -42,11 +42,11 @@ export class AxiosService {
     }
 
     async findAnimesByYear(age: string, page: number) {
-        return await this.searchAnimes(null, null, age, page)
+        return await this.searchAnimes(null, null, age, page, null, null)
     }
 
     async findAnimesRecents() {
-        return await this.searchAnimes()
+        return await this.searchAnimes(null, null, null, null, null, null)
     }
 
     async findAllAnimes(page: number) {

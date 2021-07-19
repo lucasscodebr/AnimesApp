@@ -1,24 +1,21 @@
 import Axios from '../config/axios-config'
 
 export class AxiosService {
-    private http: any
+    private readonly http: any
+    private static instance: AxiosService
 
     constructor() {
         this.http = Axios
     }
 
     static getInstance(): AxiosService {
-        return new AxiosService()
+        if (AxiosService.instance) {
+            AxiosService.instance = new AxiosService()
+        }
+        return AxiosService.instance
     }
 
-    async searchAnimes(name: string | null, category: string | null, age: string | null, page: number | null, size: number | null, orderBy: string | null) {
-        name = name || ''
-        category = category || ''
-        age = age || ''
-        page = page || 0
-        size = size || 50
-        orderBy = orderBy || 'DESC'
-
+    async searchAnimes(name: string = '', category: string = '', age: string = '', page: number = 0, size: number = 50, orderBy: string = 'DESC') {
         try {
             const response = await this.http.get('animes/find/?name=' + name + '&category=' + category + '&age=' + age + '&page=' + page + '&size=' + size + '&orderBy=' + orderBy)
             return response.data
@@ -29,7 +26,7 @@ export class AxiosService {
     }
 
     async findAllByCategory(category: string, page: number) {
-        return await this.searchAnimes(null, category, null, page, null, null)
+        return await this.searchAnimes(undefined, category, undefined, page, undefined, undefined)
     }
 
     async findAllCategory() {
@@ -42,11 +39,11 @@ export class AxiosService {
     }
 
     async findAnimesByYear(age: string, page: number) {
-        return await this.searchAnimes(null, null, age, page, null, null)
+        return await this.searchAnimes(undefined, undefined, age, page, undefined, undefined)
     }
 
     async findAnimesRecents() {
-        return await this.searchAnimes(null, null, null, null, null, null)
+        return await this.searchAnimes(undefined, undefined, undefined, undefined, undefined, undefined)
     }
 
     async findAllAnimes(page: number) {

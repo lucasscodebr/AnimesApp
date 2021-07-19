@@ -1,13 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export class StorageService {
-    private key: string
+    private readonly key: string
+    private static instance: StorageService
+
     constructor() {
         this.key = '@favorite'
     }
 
     static getInstance() {
-        return new StorageService()
+        if (StorageService.instance) {
+            StorageService.instance = new StorageService()
+        }
+        return StorageService.instance
     }
 
     async getFavorite() {
